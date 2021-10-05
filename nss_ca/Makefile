@@ -4,6 +4,8 @@
 
 ### General
 
+PASS?=secret
+
 PRIV_KEYS_DIR=private
 CFG_DIR=config
 CERTS_DIR=certs
@@ -65,7 +67,7 @@ show-server:
 	openssl req -text -noout -verify -in $(SERVER_CERT)
 
 sign-server: prereqs-dirs
-	yes | openssl ca -config $(CA_CFG) -passin pass:secret -policy policy_match -extensions v3_ca -out $(SERVER_SIGNED) -infiles $(SERVER_CERT)
+	yes | openssl ca -config $(CA_CFG) -passin pass:$(PASS) -policy policy_match -extensions v3_ca -out $(SERVER_SIGNED) -infiles $(SERVER_CERT)
 
 show-signed:
 	openssl x509 -in $(SERVER_SIGNED) -text -noout

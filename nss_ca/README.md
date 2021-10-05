@@ -5,14 +5,46 @@ This folder contains all config files, generated certificates and keys for testi
 First we setup our own CA, then we setup Server key and certs and then we use CA to sing the Server certificate.
 
 # Usage
-## Generation
-TBC
+## Basic
+To generate CA cert and key, Server cert and key and signed server cert.
+```
+make
+```
+
+Without signing
+```
+make build
+```
+
+Only signing. Can be used multiple times, creates a series in `newcerts/`
+```
+make sign-server
+```
+
+Other tools
+```
+#cleans everything
+make fclean
+
+#reruns the whole thing -> make fclean && make
+make re
+```
+
+## Advanced
+If you want to customize the passphrase for `cakey.pem` (recommended). Change `config/nss-ca.cnf` line/s `input_password` / `output_password` in `[ req ]` category. And then supply the same to make command with `PASS=your_passphrase`.
+
+e.g.
+```
+make PASS=testpass
+```
+
 
 ## Use
 TBC
 
 # Files
-## nss-ca.cnf
+
+## config/nss-ca.cnf
 Configuration file for the CA setup. 
 
 Built based on OpenSSL's [template](https://github.com/openssl/openssl/blob/master/apps/openssl.cnf)
@@ -21,10 +53,19 @@ Exposed password - should be omitted or commented out for external deployment, i
 
 crl_ext should be reviewed.
 
-## nss-server.cnf
+## config/nss-server.cnf
+Config file for Server setup.
 
-## index.txt
-For openssl to keep index of our certs
+TBC
 
-## serial.txt
-For openssl to keep serial of our certs
+## data/ (generated)
+Folder containing openssl database to track signed certs
+
+## certs/ (generated)
+Folder containing CA and Server cert
+
+## newcerts/ (generated)
+Folder containing final signed certificates
+
+## private/ (generated)
+Folder containing CA and Server private keys
