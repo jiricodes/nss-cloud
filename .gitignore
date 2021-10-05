@@ -1,0 +1,5 @@
+nss_ca/*.pem
+nss_ca/private/
+nss_ca/certs/
+nss_ca/data/
+nss_ca/newcerts/

@@ -1,0 +1,62 @@
+HOME            = .
+RANDFILE        = $ENV::HOME/.rnd
+
+####################################################################
+[ req ]
+default_bits       = 2048
+default_keyfile    = private/serverkey.pem
+distinguished_name = server_distinguished_name
+req_extensions     = server_req_extensions
+string_mask        = utf8only
+
+# Passwords for private keys if not present they will be prompted for
+input_password = secret
+output_password = secret
+
+####################################################################
+[ server_distinguished_name ]
+countryName			= Country Name (2 letter code)
+countryName_default		= FI
+countryName_min			= 2
+countryName_max			= 2
+
+stateOrProvinceName		= State or Province Name (full name)
+stateOrProvinceName_default	= Uusimaa
+
+localityName			= Locality Name (eg, city)
+localityName_default = Helsinki
+
+0.organizationName		= Organization Name (eg, company)
+0.organizationName_default	= NSS Cloud
+
+organizationalUnitName		= Organizational Unit Name (eg, section)
+organizationalUnitName_default	= Networked Systems and Services
+
+commonName			= Common Name (e.g. server FQDN or YOUR name)
+commonName_default = NSS Cloud CA
+commonName_max			= 64
+
+emailAddress			= Email Address
+emailAddress_default	= jnovotny@ad.helsinki.fi
+emailAddress_max		= 64
+
+####################################################################
+[ server_req_extensions ]
+
+subjectKeyIdentifier = hash
+basicConstraints     = CA:FALSE
+keyUsage             = digitalSignature, keyEncipherment
+subjectAltName       = @alternate_names
+nsComment            = "OpenSSL Generated Certificate"
+
+####################################################################
+[ alternate_names ]
+
+## Domain name when running externally
+# DNS.1  = example.com
+
+## Local Testing just direct IP
+# IPv4 localhost
+IP.1     = 127.0.0.1
+# IPv6 localhost
+IP.2     = ::1
