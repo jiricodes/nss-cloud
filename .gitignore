@@ -1,1 +1,2 @@
 nss_ca/*.pem
+nss_ca/private/

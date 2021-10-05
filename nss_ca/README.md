@@ -22,3 +22,9 @@ Exposed password - should be omitted or commented out for external deployment, i
 crl_ext should be reviewed.
 
 ## nss-server.cnf
+
+## index.txt
+For openssl to keep index of our certs
+
+## serial.txt
+For openssl to keep serial of our certs
