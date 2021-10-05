@@ -37,11 +37,13 @@ all: build-ca build-server sign-server
 
 build: build-ca build-server
 
-prereqs:
+prereqs-dirs:
 	@mkdir -p $(PRIV_KEYS_DIR)
 	@mkdir -p $(CERTS_DIR)
 	@mkdir -p $(SIGNED_DIR)
 	@mkdir -p $(DATA_DIR)
+
+prereqs: prereqs-dirs
 	@touch $(IDX)
 	@echo "01" > $(SER)
 
@@ -62,8 +64,11 @@ build-server: prereqs
 show-server:
 	openssl req -text -noout -verify -in $(SERVER_CERT)
 
-sign-server: prereqs
-	openssl ca -config $(CA_CFG) -policy policy_match -extensions v3_ca -out $(SERVER_SIGNED) -infiles $(SERVER_CERT)
+sign-server: prereqs-dirs
+	yes | openssl ca -config $(CA_CFG) -passin pass:secret -policy policy_match -extensions v3_ca -out $(SERVER_SIGNED) -infiles $(SERVER_CERT)
+
+show-signed:
+	openssl x509 -in $(SERVER_SIGNED) -text -noout
 
 clean:
 
