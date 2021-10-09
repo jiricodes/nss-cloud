@@ -10,7 +10,9 @@
 
 Figure 1 - Scalable Nexcloud setup example. NFS (Network file system) as storage layer, an LDAP (Lightweight Directory Access Protocol) user directory, caching, databases and load balancer.  [\[NC-WP\]](#nc-wp)
 
-In principle Nextcloud server is a web application based on PHP and can be run with any webserver, such as Apache or NGINX. The core of Nextcloud provides storage of file sharing information, user details, application data, configuration and file information in database (MySQL, MariaDB and PostegreSGL are supported). Additional features are available with added services and setup. [\[NC-WP\]](#nc-wp)
+In principle Nextcloud server is a web application based on PHP and can be run with any webserver, such as Apache or NGINX. The core of Nextcloud provides storage of file sharing information, user details, application data, configuration and file information in database (MySQL, MariaDB and PostegreSGL are supported). Additional features are available with added services and setup. Plenty of NFS soulutions work natively with Nextcloud. [\[NC-WP\]](#nc-wp)
+
+To access data Nextcloud provides intuitive interface through web browser, Android, iOS or desktop applications.
 
 ### 2.2 NSS-cloud adoption
 
@@ -27,9 +29,16 @@ Nextcloud
 pros:
 - free
 - beginner friendly base and basic setup
+- decent documentation
+- auditability
 
 cons:
 - 
+
+nss-ca
+certificate chain generation and signing
+- good for personal usage
+- cannot be trustworthy otherwise
 
 ## 6 Which of the fallacies of the distributed system does your system violate, and how (1 points).
 
