@@ -1,9 +1,45 @@
 # NSS-Cloud Report
+## 0 TOC
 
-## 1 System Goals (1 point)
+- [1 System Goals](#1-system-goals)
+	- [1.1 Qualitative Goals](#1.1-qualitative-goals)
+	- [1.2 Quantitative Goals](#1.2-quantitative-goals)
+	- [1.3 Use Cases](#1.3-use-cases)
+- [2 System architecture](#2-system-architecture)
+	- [2.1 Nextcloud server architecture](#2.1-nextcloud-server-architecture)
+	- [2.2 NSS-cloud adoption](#2.2-nss-cloud-adoption)
+- [3 Components](#3-components)
+	- [3.1 Nextcloud](#3.1-nextcloud)
+	- [3.2 PostegreSQL](#3.2-postegresql)
+	- [3.3 LDAP](#3.3-ldap)
+	- [3.4 Certification BOT](#3.4-certification-bot)
+	- [3.5 Clients](#3.5-clients)
+- [4 Communication](#4-communication)
+- [5 Open source modules evaluation](#5-open-source-modules-evaluation)
+	- [5.1 Nextcloud](#5.1-nextcloud)
+	- [5.2 Let's Encrypt](#5.2-lets-encrypt)
+	- [5.3 Optional nss-ca](#5.3-optional-nss-ca)
+- [6 Fallacies](#6-fallacies)
+	- [6.1 Network is reliable](#6.1-network-is-reliable)
+	- [6.2 Latency is zero](#6.2-latency-is-zero)
+	- [6.3 Infinite bandwidth](#6.3-infinite-bandwidth)
+	- [6.4 Network is secure](#6.4-network-is-secure)
+	- [6.5 Topology doesn’t change](#6.5-topology-doesnt-change)
+	- [6.6 There is one administrator](#6.6-there-is-one-administrator)
+	- [6.7 Transport cost is zero](#6.7-transport-cost-is-zero)
+	- [6.8 Network is homogeneous](#6.8-network-is-homogeneous)
+- [7 Further development](#7-further-development)
+	- [7.1 Deployment](#7.1-deployment)
+	- [7.2 Federation](#7.2-federation)
+	- [7.3 Additional Services and Features](#7.3-additional-services-and-features)
+	- [7.X Others](#7.x-others)
+- [8 Evaluation](#8-evaluation)
+- [9 Conclusion / Learning](#9-conclusion-/-learning)
+
+## 1 System Goals
+
 
 ### 1.1 Qualitative Goals
-- mention of some use cases and desired goals
 - privacy
 
 ### 1.2 Quantitative Goals
@@ -61,7 +97,7 @@ Interface? (http/https for updates? File system (saving cert on drive) for inter
 ### 3.5 Clients
 Throug web browser portal over HTTPS. (TBC test app)
 
-## 4 Communicaiton
+## 4 Communication
 	Communication channel between the modules. For instance, do the modules use secure communication to communicate with each other, if yes, how?
 
 Already hinted in previous chapter
@@ -77,7 +113,7 @@ Already hinted in previous chapter
 
 *Open source is the way forward and any proprietary solution should be heavily build on open source. No need to keep reinventing wheel. (TBC reference based open source rant?)*
 
-### Nextcloud
+### 5.1 Nextcloud
 pros:
 - free
 - beginner friendly base and basic setup
@@ -87,10 +123,10 @@ pros:
 cons:
 - 
 
-### Let's Encrypt
+### 5.2 Let's Encrypt
+- the tyni script perhaps?
 
-
-### Optional nss-ca
+### 5.3 Optional nss-ca
 certificate chain generation and signing script. Based on widely used OpenSSL.
 - good enough for personal usage
 - openssl and crypto in general is not easy and user friendly
@@ -152,7 +188,7 @@ Further WebDAV standard complient API gives an opportunity to indenpendently cre
 - cetrificate
 
 
-## 8 Evaluation.
+## 8 Evaluation
 	Methodology used for evaluating the system performance, and the key results
 
 - latency, throughput / bandwidth?
