@@ -2,6 +2,7 @@
 
 ## 1 System Goals (1 point)
 - mention of some use cases and desired goals
+- technical goals (security, reliability)
 
 ## 2 System architecture (2 points)
 ### 2.1 Nextcloud server architecture
