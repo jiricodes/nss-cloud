@@ -47,7 +47,8 @@ certificate chain generation and signing
 
 
 ## 7 What needs to be added to your system be used to be integrated/extended by another system (2 points).
-
+- manual installation
+- add trusted to have multiple instances running together (federation)
 
 ## 8 Evaluation. Methodology used for evaluating the system performance, and the key results (2 points)
 
