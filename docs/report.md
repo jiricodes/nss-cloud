@@ -38,20 +38,22 @@
 
 ## TBC Introduction?
 This report discusses bla bla bla
-
+　
 ## 1 System Goals
-Following section introduces minimal desired goals of the system and serves as a base for all decision making regarding the practical implementation of the system. The two types of designed goals are qualitative and quantitative, where some may span over both types. Also, we describe some potential use cases as it may help to draw a better picture of the intended purpose of the NSS-cloud system and underlying design.
+This section introduces primary goals of the system and serves as a basis for all decisions regarding the practical implementation of the system. The goals can generally be divided into two categories, qualitative goals and quantitative goals, though some may also fall into both. Additionally, we describe some potential use cases as keeping them in mind will allow us to design our system from the ground up to be used effectively in practice.
 
 
 ### 1.1 Qualitative Goals
-**Privacy** is one of the core drivers and goals of this project. As more and more data, services and even infrastructure (e.g. DNS resolution) are being centralized around the top players in the cloud industry the need for guarantee of privacy and data confidentiality is ever rising (resources TBC - confidential dns, confidential computing, GDPR). This need could be to some extend satisfied with personal cloud deployment on local network or self-hosted cloud.
+**Privacy** is one of the core drivers and goals of this project. As more and more data, services, and even infrastructure (e.g. DNS resolution) are being centralized by the top players in the cloud industry, there is an increasing need for alternate options for those who need a guarantee of privacy and data confidentiality (resources TBC - confidential dns, confidential computing, GDPR). This need could be to some extent satisfied with personal cloud deployment on local network or self-hosted cloud.
+
+**Security** goes hand-in-hand with privacy, as there cannot be any true privacy if the service is insecure, even if it is being self-hosted. This is also especially important considering that it is a "personal" cloud, which should be secure enough to safely store any sensitive personal data that users store on it.
 
 ### 1.2 Quantitative Goals
 Depending on use case, some quantitative metrics may be required or at least welcomed by the consumer.
 
-**Reliability** of the service is crucial and users' data should remain accessible and loss-proof at all times.
+**Reliability** of the service is crucial, and users' data should remain accessible and loss-proof at all times. The entire point of a personal cloud is storage, and if the service is unreliable and data is inaccessibly or lost, then it is a complete failure of the system.
 
-**Performance** is use case and demployment specific, but the used software and protocols should introduce minimal performance overhead and be capable of running on low-end consumer machines, e.g. NUCs.
+**Performance** is use case and demployment-specific, but the software and protocols should introduce minimal performance overhead and be capable of running on low-end consumer machines, e.g. NUCs. Data storage is now a relatively simple task, especially at the basic consumer level, so poor performance should be a cause for concern.
 
 
 ### 1.3 Use Cases
@@ -206,7 +208,9 @@ Further WebDAV standard complient API gives an opportunity to indenpendently cre
 ## 8 Evaluation
 	Methodology used for evaluating the system performance, and the key results
 
+- hardware resource usage (idle and under load)
 - latency, throughput / bandwidth?
+- user experience testing
 
 ## 9 Conclusion / Learning
 
