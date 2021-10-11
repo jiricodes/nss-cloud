@@ -35,19 +35,47 @@ Since our primary goal is a personal use of the cloud infrastructure (see [1.3 U
 	- the communication protocol between Nextcloud and database is TLS 1.3 (TLS_AES_256_GCM_SHA384)
 - Clients connect through web browser using secure HTTPS connection with Let's Encrypt certificate
 
-## 3 Components / Module description including the interfaces exposed between the modules
-- PostegreSQL (docker)
-- nextcloud server (tls to PostegreSQL container. https serves for client)
-- client - over https through web 
-- certification bot - let's encrypt 
-- apache
+## 3 Components
+	Components / Module description including the interfaces exposed between the modules
 
-## 4 Communication channel between the modules. For instance, do the modules use secure communication to communicate with each other, if yes, how?
+All in VM, and with Apache. Exposed ports for HTTPS and SSH connections.
+
+### 3.1 Nextcloud
+Direct installation.
+
+TLS 1.3 to database
+
+HTTPS to clients
+
+### 3.2 PostegreSQL
+Database in a docker container connected via TLS 1.3.
+
+### 3.3 LDAP
+TBC
+
+### 3.4 Certification BOT
+Let's Encrypt certificate maintainer.
+
+Interface? (http/https for updates? File system (saving cert on drive) for internal communication?)
+
+### 3.5 Clients
+Throug web browser portal over HTTPS. (TBC test app)
+
+## 4 Communicaiton
+	Communication channel between the modules. For instance, do the modules use secure communication to communicate with each other, if yes, how?
+
+Already hinted in previous chapter
 
 - server and client over HTTPS
+	- how
+
 - nextcloud and database over TLS
 
-## 5 Pros and cons of the open-source components/modules used for developing the system, and the modules/components you have built (3 points)
+
+## 5 Open source modules evaluation
+	Pros and cons of the open-source components/modules used for developing the system, and the modules/components you have built (3 points)
+
+*Open source is the way forward and any proprietary solution should be heavily build on open source. No need to keep reinventing wheel. (TBC reference based open source rant?)*
 
 ### Nextcloud
 pros:
@@ -65,19 +93,23 @@ cons:
 ### Optional nss-ca
 certificate chain generation and signing script. Based on widely used OpenSSL.
 - good enough for personal usage
+- openssl and crypto in general is not easy and user friendly
 - cannot be trustworthy otherwise
 
-## 6 Which of the fallacies of the distributed system does your system violate, and how (1 points).
+Bla bla bla OpenSSL crap and ambiguous documentation etc.
+
+## 6 Fallacies
+	Which of the fallacies of the distributed system does your system violate, and how?
 
 ### 6.1 Network is reliable
-	- check if nextcoud mitigades e.g. upload interrupts / session resumption etc (I'd assume so since basic HTTPS config generally supports this on lower levels)
+- check if nextcoud mitigades e.g. upload interrupts / session resumption etc (I'd assume so since basic HTTPS config generally supports this on lower levels)
 
 ### 6.2 Latency is zero
-	- personal network (local), we do not care so much about the latency
-	- may be considered for self hosting somewhere and implementing e.g. WebRTC based audio/video chat
+- personal network (local), we do not care so much about the latency
+- may be considered for self hosting somewhere and implementing e.g. WebRTC based audio/video chat
 
 ### 6.3 Infinite bandwidth
-	- TBC
+- TBC
 
 ### 6.4 Network is secure
 Our system secures client communication with HTTPS and internal with TLS. Further consideration could be made to run the system in HSM based secure VM (e.g AMD-SEV/SNP, Intel TDX or Arm CCA in the future) or shifting the system to a container rather than VM and bootstrapping it with HSM (Intel SGX, RISC-V Keystone, TPM 2.0 etc.). This would secure internal communication and compute to the extent that even a physical access to the system would not reveal any sensitive information*.
@@ -85,7 +117,7 @@ Our system secures client communication with HTTPS and internal with TLS. Furthe
 *We're aware of side channel attacks vulnerabilities of mentioned systems and their are out of the scope of this project.
 
 ### 6.5 Topology doesn’t change
-	- TBC
+- TBC
 
 ### 6.6 There is one administrator
 Nextcloud support multiple administrators, and further specified roles can be delegated to support customized administration topology. [\[NC-WP\]](#nc-wp)
@@ -98,7 +130,8 @@ The undelying OS (Ubuntu 20.04) can be as well configured to support multiple us
 ### 6.8 Network is homogeneous
 The Nextcloud and our solution supports various communication protocols and APIs.
 
-## 7 What needs to be added to your system be used to be integrated/extended by another system (2 points).
+## 7 Further development
+	What needs to be added to your system be used to be integrated/extended by another system.
 
 ### 7.1 Deployment
 **Refactor needed**
@@ -119,7 +152,8 @@ Further WebDAV standard complient API gives an opportunity to indenpendently cre
 - cetrificate
 
 
-## 8 Evaluation. Methodology used for evaluating the system performance, and the key results (2 points)
+## 8 Evaluation.
+	Methodology used for evaluating the system performance, and the key results
 
 - latency, throughput / bandwidth?
 
