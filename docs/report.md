@@ -19,7 +19,7 @@ To access data Nextcloud provides intuitive interface through web browser, Andro
 ## 3 Components / Module description including the interfaces exposed between the modules (2 points)
 - mariadb (docker)
 - nextcloud
-- cert bot (just script?)
+- certification bot
 - apache
 
 ## 4 Communication channel between the modules. For instance, do the modules use secure communication to communicate with each other, if yes, how? (2 points)
