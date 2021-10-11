@@ -36,19 +36,32 @@
 - [8 Evaluation](#8-evaluation)
 - [9 Conclusion / Learning](#9-conclusion-/-learning)
 
+## TBC Introduction?
+This report discusses bla bla bla
+
 ## 1 System Goals
+Following section introduces minimal desired goals of the system and serves as a base for all decision making regarding the practical implementation of the system. The two types of designed goals are qualitative and quantitative, where some may span over both types. Also, we describe some potential use cases as it may help to draw a better picture of the intended purpose of the NSS-cloud system and underlying design.
 
 
 ### 1.1 Qualitative Goals
-- privacy
+**Privacy** is one of the core drivers and goals of this project. As more and more data, services and even infrastructure (e.g. DNS resolution) are being centralized around the top players in the cloud industry the need for guarantee of privacy and data confidentiality is ever rising (resources TBC - confidential dns, confidential computing, GDPR). This need could be to some extend satisfied with personal cloud deployment on local network or self-hosted cloud.
 
 ### 1.2 Quantitative Goals
-- performance
-- reliability
+Depending on use case, some quantitative metrics may be required or at least welcomed by the consumer.
+
+**Reliability** of the service is crucial and users' data should remain accessible and loss-proof at all times.
+
+**Performance** is use case and demployment specific, but the used software and protocols should introduce minimal performance overhead and be capable of running on low-end consumer machines, e.g. NUCs.
+
 
 ### 1.3 Use Cases
-- personal clound for storing and sharing family pictures etc.
-- self-made home security camera system (old android phone -> over-tls-stream -> openCV for object detection -> nextcloud as userinterface)
+To what end an user would like to utilise the system may widely vary. However, we will introduce few use cases for the NSS-cloud system.
+
+The personal cloud can be simply used as a storage and sharing platform as any other widely used platform (Google, iCloud etc.). However, due to its locality and low amount of users the consumer benefits by relatively high privacy guarantees and potentially much higher perfomance (HW dependant). Of course for the cost of greater availability outside of the local network. The tradeoff can be somewhat balanced by self hosting the system, which on the other hand increases the attack surface.
+
+Another use could be seen by combination of the personal cloud with a home assistant (e.g. open source [Home Assistant](https://www.home-assistant.io/)), which would have similar benefits as above mentioned use case. Additionally this would lower chance of external misuse and improved responsiveness and debugging of the home assistent settings. 
+
+One rather complex, DIY-style, application could be seen with development of custom security cameras. That could potentially be even connected to the previous use case. One could recycle old smartphone to serve as a security camera feed (e.g. over TLS) to the home server, where for example with framework like [OpenCV](https://opencv.org/) the images are processed for object detection or individuals identification. The personal cloud could play various roles in this model, from data processing, storing to interfacing such model using its API, and mitigating the thread of possibly sensitive data leakage.
 
 ## 2 System architecture
 ### 2.1 Nextcloud server architecture
@@ -183,6 +196,8 @@ Nextcloud maintains stable docker container configuration, which is a good place
 Nextcloud provides user friendly *app store* where once can pick from many available services (e.g. something something, voice channel)
 
 Further WebDAV standard complient API gives an opportunity to indenpendently create custom services if one is of coding nature.
+
+*Data storage connection to NAS-like system or at least raid-0 configuration of the system.*
 
 ### 7.X Others
 - cetrificate
