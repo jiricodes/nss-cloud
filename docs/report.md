@@ -16,9 +16,17 @@ To access data Nextcloud provides intuitive interface through web browser, Andro
 
 ### 2.2 NSS-cloud adoption
 
+- nextcloud core on vm
+- MariaDB in container - communicating with the core over TLS 1.3 (TLS_AES_256_GCM_SHA384), limited to 256mb wutg 256mb swap from vHDD and atmost 0.5 vCPU usage.
+- Clients connect through HTTPS connection - Let's Encrypt certificate
+
+Specs
+- vm running on csc - Ubuntu 20.04, 1vCPU, 1GB RAM.
+
 ## 3 Components / Module description including the interfaces exposed between the modules (2 points)
 - mariadb (docker)
-- nextcloud
+- nextcloud server (tls to mariadb container. https serve for client)
+- client - over https through web 
 
 ## 4 Communication channel between the modules. For instance, do the modules use secure communication to communicate with each other, if yes, how? (2 points)
 
