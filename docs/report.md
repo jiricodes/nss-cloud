@@ -14,7 +14,7 @@
 - personal clound for storing and sharing family pictures etc.
 - self-made home security camera system (old android phone -> over-tls-stream -> openCV for object detection -> nextcloud as userinterface)
 
-## 2 System architecture (2 points)
+## 2 System architecture
 ### 2.1 Nextcloud server architecture
 
 ![Figure 1](fig-1-nextcloud-setup.png)
@@ -34,14 +34,14 @@ To access data Nextcloud provides intuitive interface through web browser, Andro
 Specs
 - vm running on csc - Ubuntu 20.04, 1vCPU, 1GB RAM.
 
-## 3 Components / Module description including the interfaces exposed between the modules (2 points)
+## 3 Components / Module description including the interfaces exposed between the modules
 - mariadb (docker)
 - nextcloud server (tls to mariadb container. https serve for client)
 - client - over https through web 
 - certification bot - let's encrypt 
 - apache
 
-## 4 Communication channel between the modules. For instance, do the modules use secure communication to communicate with each other, if yes, how? (2 points)
+## 4 Communication channel between the modules. For instance, do the modules use secure communication to communicate with each other, if yes, how?
 
 - server and client over HTTPS
 - nextcloud and database over TLS? perhaps
@@ -84,6 +84,8 @@ certificate chain generation and signing
 - latency, throughput / bandwidth?
 
 ## 9 Conclusion / Learning
+
+
 
 ## Resources
 <a id="nc-wp">\[NC-WP\]</a> - Nextcloud Solution Architecture whitepaper. [Link](https://nextcloud.com/media/wp135098u/Architecture-Whitepaper-WebVersion-072018.pdf). Accessed 09.10.2021.
