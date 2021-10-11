@@ -1,7 +1,17 @@
 # NSS-Cloud Report
 
 ## 1 System Goals (1 point)
+
+### 1.1 Qualitative Goals
 - mention of some use cases and desired goals
+- privacy
+
+### 1.2 Quantitative Goals
+- performance
+
+### 1.3 Use Cases
+- personal clound for storing and sharing family pictures etc.
+- self-made home security camera system (old android phone -> over-tls-stream -> openCV for object detection -> nextcloud as userinterface)
 
 ## 2 System architecture (2 points)
 ### 2.1 Nextcloud server architecture
@@ -52,7 +62,14 @@ certificate chain generation and signing
 
 ## 6 Which of the fallacies of the distributed system does your system violate, and how (1 points).
 
-
+### 6.1 Network is reliable
+### 6.2 Latency is zero
+### 6.3 Infinite bandwidth
+### 6.4 Network is secure
+### 6.5 Topology doesn’t change
+### 6.6 There is one administrator
+### 6.7 Transport cost is zero
+### 6.8 Network is homogeneous
 
 ## 7 What needs to be added to your system be used to be integrated/extended by another system (2 points).
 - manual installation
