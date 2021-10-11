@@ -8,6 +8,7 @@
 
 ### 1.2 Quantitative Goals
 - performance
+- reliability
 
 ### 1.3 Use Cases
 - personal clound for storing and sharing family pictures etc.
@@ -37,6 +38,8 @@ Specs
 - mariadb (docker)
 - nextcloud server (tls to mariadb container. https serve for client)
 - client - over https through web 
+- certification bot - let's encrypt 
+- apache
 
 ## 4 Communication channel between the modules. For instance, do the modules use secure communication to communicate with each other, if yes, how? (2 points)
 
