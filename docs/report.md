@@ -70,25 +70,34 @@ One rather complex, DIY-style, application could be seen with development of cus
 
 ![Figure 1](fig-1-nextcloud-setup.png)
 
-Figure 1 - Scalable Nexcloud setup example. NFS (Network file system) as storage layer, an LDAP (Lightweight Directory Access Protocol) user directory, caching, databases and load balancer.  [\[NC-WP\]](#nc-wp)
+*Figure 1 - Scalable Nexcloud setup example. NFS (Network file system) as storage layer, an LDAP (Lightweight Directory Access Protocol) user directory, caching, databases and load balancer.  [\[NC-WP\]](#nc-wp)*
 
 In principle Nextcloud server is a web application based on PHP and can be run with any webserver, such as Apache or NGINX. The core of Nextcloud provides storage of file sharing information, user details, application data, configuration and file information in database (MySQL, MariaDB and PostegreSGL are supported). Additional features are available with added services and setup. Plenty of NFS soulutions work natively with Nextcloud. [\[NC-WP\]](#nc-wp)
 
 To access data, but also to configure, monitor and manage, Nextcloud provides intuitive interface through web browser, Android, iOS or desktop applications. Alternatively resources can handled via WebDAV standard API. 
 
 ### 2.2 NSS-cloud adoption
-Since our primary goal is a personal use of the cloud infrastructure (see [1.3 Use Cases](#1.3-use-cases)) we do not expect high traffic environment and the whole system should comfortably fit on low spec consumer hardware (e.g. NUC). Therefore our practical application has been concluded as follows:
 
-- The server system runs within a single VM (Ubuntu 20.04, 1 vCPU, 1GB RAM)
-- The Nextcloud has been natively installed and configured
-- It utilises PostegreSQL which is running in constrained environment of a container
-	- 256MB storage with 256MB additional swap space from vHDD and allowed to use upmost 0.5 vCPU
-	- the communication protocol between Nextcloud and database is TLS 1.3 (TLS_AES_256_GCM_SHA384)
-- Clients connect through web browser using secure HTTPS connection with Let's Encrypt certificate
+<a id="figure-2">![Figure 2](nss-cloud-arch.png)</a>
 
-![Figure 2](nss-cloud-arch.png)
+*Figure 2 - NSS cloud architecture. Clients connect to Nextcloud over HTTPS. Default OS filesystem is used. PostegreSQL running in a container utilised over TLS.*
 
-Figure 2 - NSS cloud architecture. Clients connect to Nextcloud over HTTPS. Default OS filesystem is used. PostegreSQL running in a container utilised over TLS.
+Since our primary goal is a personal use of the cloud infrastructure (see [1.3 Use Cases](#1.3-use-cases)) we do not expect high traffic environment and the whole system should comfortably fit on low spec consumer hardware (e.g. NUC). Therefore our practical application has been concluded as depicted in [Figure 2](#figure-2).
+
+The Nextcloud server system runs within a single virtual machine (VM). The VM has allocated 1 vCPU and 1GB RAM and contains a minimal default instalation of Ubuntu 20.04 operating system. It is natively installed and configured (not in a container). The system utilises PostegreSQL database which is running in a container and communicates over TLS. The database has restricted resources access with 256MB for storage (additional 256MB swap space) and limited to upmost 0.5 vCPU usage. Linux native file system interface is used for object storage.
+
+Clients can connect using either the Nextcloud app available on major OS or via web browser interface. The connection is secured over HTTPS and utilises trustworthy automated Let's Encrypt certificate.
+
+For administration purposes the VM exposes a port for secure SSH connection.
+
+
+	- The server system runs within a single VM (Ubuntu 20.04, 1 vCPU, 1GB RAM)
+	- The Nextcloud has been natively installed and configured
+	- It utilises PostegreSQL which is running in constrained environment of a 	container
+		- 256MB storage with 256MB additional swap space from vHDD and allowed 	to use upmost 0.5 vCPU
+		- the communication protocol between Nextcloud and database is TLS 1.3 	(TLS_AES_256_GCM_SHA384)
+	- Clients connect through web browser using secure HTTPS connection with 	Let's Encrypt certificate
+
 
 ## 3 Components
 	Components / Module description including the interfaces exposed between the modules
@@ -124,7 +133,7 @@ Already hinted in previous chapter
 - server and client over HTTPS
 	- how
 
-- nextcloud and database over TLS
+- nextcloud and database over TLS (TLS_AES_256_GCM_SHA384)
 
 
 ## 5 Open source modules evaluation
