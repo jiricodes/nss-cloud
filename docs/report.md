@@ -119,7 +119,7 @@ TBC
 ### 3.4 Certification BOT
 Let's Encrypt certificate maintainer.
 
-Interface? (http/https for updates? File system (saving cert on drive) for internal communication?)
+The bot updates the cetrificate when necessary. It doesn't directly communicate with the rest of the system and only contacts Let's Encrypt for the cetrificate and then saves the cetrificate for the nextcloud to use.
 
 ### 3.5 Clients
 Connection over HTTPS, web browser and android app tested. 
@@ -148,7 +148,7 @@ pros:
 - auditability -  serves the privacy and security qualitative goal, as an end user can audit the system themself without requiring to put trust in third parties
 
 cons:
-- 
+- As everyone can see the code and put up their own systems, attacking it is easier. Attacks can be planned and tested without ever touching the target. For example some vulnerabilities might be found easier through reading the code and you don't have to worry about being found out when testing attacks, if you attack a system you yourself set up.
 
 ### 5.2 Let's Encrypt
 - the tyni script perhaps?
@@ -172,6 +172,7 @@ Bla bla bla OpenSSL crap and ambiguous documentation etc.
 - may be considered for self-hosting somewhere and implementing e.g. WebRTC based audio/video chat
 
 ### 6.3 Infinite bandwidth
+- This should be less of a problem for personal use
 - TBC
 
 ### 6.4 Network is secure
@@ -207,7 +208,7 @@ For improved deployability all system components used could be containerized. Th
 Nextcloud maintains stable docker container configuration, which is a good place to start.
 
 ### 7.2 Federation
-- add trusted to have multiple instances running together (federation)
+People on different servers can share files together. Though people still need to log into their own server, this can help extending the system and make communication between users of different servers possible.
 
 ### 7.3 Additional Services and Features
 Nextcloud provides user friendly *app store* where once can pick from many available services (e.g. something something, voice channel)
