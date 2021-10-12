@@ -86,6 +86,10 @@ Since our primary goal is a personal use of the cloud infrastructure (see [1.3 U
 	- the communication protocol between Nextcloud and database is TLS 1.3 (TLS_AES_256_GCM_SHA384)
 - Clients connect through web browser using secure HTTPS connection with Let's Encrypt certificate
 
+![Figure 2](nss-cloud-arch.png)
+
+Figure 2 - NSS cloud architecture. Clients connect to Nextcloud over HTTPS. Default OS filesystem is used. PostegreSQL running in a container utilised over TLS.
+
 ## 3 Components
 	Components / Module description including the interfaces exposed between the modules
 
@@ -110,7 +114,7 @@ Let's Encrypt certificate maintainer.
 Interface? (http/https for updates? File system (saving cert on drive) for internal communication?)
 
 ### 3.5 Clients
-Throug web browser portal over HTTPS. (TBC test app)
+Connection over HTTPS, web browser and android app tested. 
 
 ## 4 Communication
 	Communication channel between the modules. For instance, do the modules use secure communication to communicate with each other, if yes, how?
