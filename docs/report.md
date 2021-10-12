@@ -37,7 +37,7 @@
 - [9 Conclusion / Learning](#9-conclusion-/-learning)
 
 ## TBC Introduction?
-This report discusses the inevitable heat death of the universe that is looming *almost* behind the corner.
+This report discusses bla bla bla
 　
 ## 1 System Goals
 This section introduces primary goals of the system and serves as a basis for all decisions regarding the practical implementation of the system. The goals can generally be divided into two categories, qualitative goals and quantitative goals, though some may also fall into both. Additionally, we describe some potential use cases as keeping them in mind will allow us to design our system from the ground up to be used effectively in practice.
@@ -57,7 +57,7 @@ Depending on use case, some quantitative metrics may be required or at least wel
 
 
 ### 1.3 Use Cases
-To what end a user would like to utilise the system may widely vary. However, we will introduce few use cases for the NSS-cloud system.
+To what end an user would like to utilise the system may widely vary. However, we will introduce few use cases for the NSS-cloud system.
 
 The personal cloud can be simply used as a storage and sharing platform as any other widely used platform (Google, iCloud etc.). However, due to its locality and low amount of users the consumer benefits by relatively high privacy guarantees and potentially much higher perfomance (HW dependant). Of course for the cost of greater availability outside of the local network. The tradeoff can be somewhat balanced by self hosting the system, which on the other hand increases the attack surface.
 
@@ -84,18 +84,19 @@ To access data, but also to configure, monitor and manage, Nextcloud provides in
 
 Since our primary goal is a personal use of the cloud infrastructure (see [1.3 Use Cases](#13-use-cases)) we do not expect high traffic environment and the whole system should comfortably fit on low spec consumer hardware (e.g. NUC). Therefore our practical application has been concluded as depicted in [Figure 2](#figure-2).
 
-The Nextcloud server system runs within a single virtual machine (VM). The VM is CSC cPouta standard.small [\[Pouta-Flavors\]](#pouta-flavors) flavor. It has 2 vCPUs and 2GB RAM allocated to it and it contains a minimal default installation of Ubuntu Server 20.04 operating system.  It is natively installed and configured (not in a container). The system utilises PostgreSQL database which is running inside a docker container hosted by the VM. Communication from and to the PostgreSQL server is done over TLS. The database has restricted resources access with 384MB for storage (additional 384MB swap space) and limited to upmost 0.5 vCPU usage. Linux native file system interface is used for object storage.
+The Nextcloud server system runs within a single virtual machine (VM). The VM has allocated 1 vCPU and 1GB RAM and contains a minimal default instalation of Ubuntu 20.04 operating system. It is natively installed and configured (not in a container). The system utilises PostegreSQL database which is running in a container and communicates over TLS. The database has restricted resources access with 256MB for storage (additional 256MB swap space) and limited to upmost 0.5 vCPU usage. Linux native file system interface is used for object storage.
 
 Clients can connect using either the Nextcloud app available on major OS or via web browser interface. The connection is secured over HTTPS and utilises trustworthy automated Let's Encrypt certificate.
 
 For administration purposes the VM exposes a port for secure SSH connection.
 
-	- The server system runs within a single VM CSC cPouta [aa](www) (Ubuntu 20.04, 2 vCPU, 2GB RAM)
+
+	- The server system runs within a single VM (Ubuntu 20.04, 1 vCPU, 1GB RAM)
 	- The Nextcloud has been natively installed and configured
-	- It utilises PostegreSQL which is running in constrained environment of a container
-		- 384MB storage with 384MB additional swap space from vHDD and allowed to use upmost 0.5 vCPU
+	- It utilises PostegreSQL which is running in constrained environment of a 	container
+		- 256MB storage with 256MB additional swap space from vHDD and allowed 	to use upmost 0.5 vCPU
 		- the communication protocol between Nextcloud and database is TLS 1.3 	(TLS_AES_256_GCM_SHA384)
-	- Clients connect through web browser using secure HTTPS connection with Let's Encrypt certificate
+	- Clients connect through web browser using secure HTTPS connection with 	Let's Encrypt certificate
 
 
 ## 3 Components
@@ -112,6 +113,7 @@ HTTPS to clients
 
 ### 3.2 PostegreSQL
 Database in a docker container connected via TLS 1.3.
+SSL must be used if the database is not on the same server as the Nextcloud instance, which is not currently the case with our project.
 
 ### 3.3 LDAP
 TBC
@@ -142,18 +144,26 @@ Already hinted in previous chapter
 
 ### 5.1 Nextcloud
 pros:
-- free
-- beginner friendly base and basic setup
+- free and open source
+- beginner-friendly basic setup
+- can run very lightweight (e.g. on a RasPi) but also scale very large
+- modular, can be extended with own or third-party extensions
 - decent documentation
 - auditability -  serves the privacy and security qualitative goal, as an end user can audit the system themself without requiring to put trust in third parties
-
 cons:
-- 
 
 ### 5.2 Let's Encrypt
-- the tyni script perhaps?
+pros:
+- free
+- very simple and quick
+- only requires a short script to use
 
-### 5.3 Optional nss-ca
+### 5.3 PostgreSQL
+- free and open source
+cons:
+-not explicitly recommended for use with Nextcloud
+
+### 5.4 Optional nss-ca
 certificate chain generation and signing script. Based on widely used OpenSSL.
 - good enough for personal usage
 - openssl and crypto in general is not easy and user friendly
@@ -165,11 +175,11 @@ Bla bla bla OpenSSL crap and ambiguous documentation etc.
 	Which of the fallacies of the distributed system does your system violate, and how?
 
 ### 6.1 Network is reliable
-- check if nextcoud mitigates e.g. upload interrupts / session resumption etc (I'd assume so since basic HTTPS config generally supports this on lower levels)
+- check if nextcoud mitigades e.g. upload interrupts / session resumption etc (I'd assume so since basic HTTPS config generally supports this on lower levels)
 
 ### 6.2 Latency is zero
 - personal network (local), we do not care so much about the latency
-- may be considered for self-hosting somewhere and implementing e.g. WebRTC based audio/video chat
+- may be considered for self hosting somewhere and implementing e.g. WebRTC based audio/video chat
 
 ### 6.3 Infinite bandwidth
 - TBC
@@ -185,11 +195,10 @@ Our system secures client communication with HTTPS and internal with TLS. Furthe
 ### 6.6 There is one administrator
 Nextcloud support multiple administrators, and further specified roles can be delegated to support customized administration topology. [\[NC-WP\]](#nc-wp)
 
-The underlying OS (Ubuntu 20.04) can be as well configured to support multiple users with various administrative privileges. **(Some Reference here)**
+The undelying OS (Ubuntu 20.04) can be as well configured to support multiple users with various administrative priviliedges. **(Some Reference here)**
 
 ### 6.7 Transport cost is zero
-- TBC (I think a. for our use case of local network we can more or less assume this, b. in Finland the internet access is almost free so zero *additional/solution specific* costs for our consumers?)
-
+- TBC (I think a. for our use case of local network we can more or less asume this, b. in Finland the internet access is almost free so zero cost for our consumers?)
 
 ### 6.8 Network is homogeneous
 The Nextcloud and our solution supports various communication protocols and APIs.
@@ -202,8 +211,6 @@ The Nextcloud and our solution supports various communication protocols and APIs
 
 Despite personal use as main target environment, it would be nice to have some kind of automated deployment script (Especially when things go sideways). From our experience the setup can be done quite quick, but it still is tedious and requires time and certain level of expertise. Definitely not for non-IT user / consumer.
 
-For improved deployability all system components used could be containerized. This would enable automated and centralized deployment which in turns offers better easy of deployment and migration. 
-
 Nextcloud maintains stable docker container configuration, which is a good place to start.
 
 ### 7.2 Federation
@@ -212,12 +219,12 @@ Nextcloud maintains stable docker container configuration, which is a good place
 ### 7.3 Additional Services and Features
 Nextcloud provides user friendly *app store* where once can pick from many available services (e.g. something something, voice channel)
 
-Further WebDAV standard complient API gives an opportunity to independently create custom services if one is of coding nature.
+Further WebDAV standard complient API gives an opportunity to indenpendently create custom services if one is of coding nature.
 
 *Data storage connection to NAS-like system or at least raid-0 configuration of the system.*
 
 ### 7.X Others
-- certificate
+- cetrificate
 
 
 ## 8 Evaluation
@@ -233,5 +240,4 @@ Nextcloud feels like a great DIY cloud playground.
 
 
 ## Resources
-<a id="nc-wp">\[NC-WP\]</a> - Nextcloud Solution Architecture whitepaper. [Link](https://nextcloud.com/media/wp135098u/Architecture-Whitepaper-WebVersion-072018.pdf). Accessed 09.10.2021. \
-<a id="pouta-flavors">\[Pouta-flavors\]</a> - Virtual machine flavors and billing unit rates. cPouta documentation. - [Link](https://docs.csc.fi/cloud/pouta/vm-flavors-and-billing/). Accessed 12.10.2021
+<a id="nc-wp">\[NC-WP\]</a> - Nextcloud Solution Architecture whitepaper. [Link](https://nextcloud.com/media/wp135098u/Architecture-Whitepaper-WebVersion-072018.pdf). Accessed 09.10.2021.
