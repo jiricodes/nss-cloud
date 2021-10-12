@@ -82,7 +82,7 @@ To access data, but also to configure, monitor and manage, Nextcloud provides in
 
 *Figure 2 - NSS cloud architecture. Clients connect to Nextcloud over HTTPS. Default OS filesystem is used. PostegreSQL running in a container utilised over TLS.*
 
-Since our primary goal is a personal use of the cloud infrastructure (see [1.3 Use Cases](#1.3-use-cases)) we do not expect high traffic environment and the whole system should comfortably fit on low spec consumer hardware (e.g. NUC). Therefore our practical application has been concluded as depicted in [Figure 2](#figure-2).
+Since our primary goal is a personal use of the cloud infrastructure (see [1.3 Use Cases](#13-use-cases)) we do not expect high traffic environment and the whole system should comfortably fit on low spec consumer hardware (e.g. NUC). Therefore our practical application has been concluded as depicted in [Figure 2](#figure-2).
 
 The Nextcloud server system runs within a single virtual machine (VM). The VM has allocated 1 vCPU and 1GB RAM and contains a minimal default instalation of Ubuntu 20.04 operating system. It is natively installed and configured (not in a container). The system utilises PostegreSQL database which is running in a container and communicates over TLS. The database has restricted resources access with 256MB for storage (additional 256MB swap space) and limited to upmost 0.5 vCPU usage. Linux native file system interface is used for object storage.
 
