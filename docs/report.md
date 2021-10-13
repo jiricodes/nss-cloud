@@ -105,7 +105,7 @@ For administration purposes the VM exposes a port for secure SSH connection.
 All in VM, and with Apache. Exposed ports for HTTPS and SSH connections.
 
 ### 3.1 Nextcloud
-Direct installation.
+Direct installation. ([nextcloud docs](https://docs.nextcloud.com/server/latest/admin_manual/installation/source_installation.html))
 
 TLS 1.3 to database
 
@@ -150,6 +150,7 @@ pros:
 - modular, can be extended with own or third-party extensions
 - decent documentation
 - auditability -  serves the privacy and security qualitative goal, as an end user can audit the system themself without requiring to put trust in third parties
+
 cons:
 - As everyone can see the code and put up their own systems, attacking it is easier. Attacks can be planned and tested without ever touching the target. For example some vulnerabilities might be found easier through reading the code and you don't have to worry about being found out when testing attacks, if you attack a system you yourself set up.
 
@@ -160,9 +161,11 @@ pros:
 - only requires a short script to use
 
 ### 5.3 PostgreSQL
+pros:
 - free and open source
+
 cons:
--not explicitly recommended for use with Nextcloud
+- not explicitly recommended for use with Nextcloud
 
 ### 5.4 Optional nss-ca
 certificate chain generation and signing script. Based on widely used OpenSSL.
@@ -226,7 +229,7 @@ Further WebDAV standard complient API gives an opportunity to indenpendently cre
 *Data storage connection to NAS-like system or at least raid-0 configuration of the system.*
 
 ### 7.X Others
-- cetrificate
+- cetrificate: Cetrificate is needed for using https. For example Let's Encrypt is a service that can provide a cetrificate for an ip address. We used [acme-tiny](https://github.com/diafygi/acme-tiny)
 
 
 ## 8 Evaluation
