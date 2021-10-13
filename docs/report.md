@@ -112,11 +112,14 @@ TLS 1.3 to database
 HTTPS to clients
 
 ### 3.2 PostegreSQL
-Database in a docker container connected via TLS 1.3.
+Database in a docker container connected via TLS 1.3. The ip that Nextcloud is using is force in the configuration to use only TLS. So there is no possiblilty that the connection would not be encrypted. The certificate is also from Lets Encrypt and are copied during Docker init from diskdrive to PostgreSQL configuration directory and also TLS is put on with commandline option. 
+
 SSL must be used if the database is not on the same server as the Nextcloud instance, which is not currently the case with our project.
 
 ### 3.3 LDAP
-TBC
+TBC 
+
+It will be running inside Docker-container and shall use only encrypted communications.
 
 ### 3.4 Certification BOT (Certbot by EFF)
 Let's Encrypt certificate maintainer. 
