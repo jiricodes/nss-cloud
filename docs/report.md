@@ -121,7 +121,7 @@ TBC
 ### 3.4 Certification BOT (Certbot by EFF)
 Let's Encrypt certificate maintainer. 
 
-The Certbotupdates the cetrificate when necessary. It doesn't directly communicate with the rest of the system and only contacts Let's Encrypt for the cetrificate and then saves the cetrificate to Apache for the nextcloud to use.
+The Certbotupdates the cetrificate when necessary. It doesn't directly communicate with the rest of the system and only contacts Let's Encrypt for the cetrificate and then saves the certificate to Apache for the nextcloud to use and for PostgreSQL.
 
 ### 3.5 Clients
 Connection over HTTPS, web browser and android app tested. 
