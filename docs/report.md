@@ -118,10 +118,10 @@ SSL must be used if the database is not on the same server as the Nextcloud inst
 ### 3.3 LDAP
 TBC
 
-### 3.4 Certification BOT
-Let's Encrypt certificate maintainer.
+### 3.4 Certification BOT (Certbot by EFF)
+Let's Encrypt certificate maintainer. 
 
-The bot updates the cetrificate when necessary. It doesn't directly communicate with the rest of the system and only contacts Let's Encrypt for the cetrificate and then saves the cetrificate for the nextcloud to use.
+The Certbotupdates the cetrificate when necessary. It doesn't directly communicate with the rest of the system and only contacts Let's Encrypt for the cetrificate and then saves the cetrificate to Apache for the nextcloud to use.
 
 ### 3.5 Clients
 Connection over HTTPS, web browser and android app tested. 
