@@ -61,7 +61,7 @@ To what end an user would like to utilise the system may widely vary. However, w
 
 The personal cloud can be simply used as a storage and sharing platform as any other widely used platform (Google, iCloud etc.). However, due to its locality and low amount of users the consumer benefits by relatively high privacy guarantees and potentially much higher perfomance (HW dependant). Of course for the cost of greater availability outside of the local network. The tradeoff can be somewhat balanced by self hosting the system, which on the other hand increases the attack surface.
 
-Another use could be seen by combination of the personal cloud with a home assistant (e.g. open source [Home Assistant](https://www.home-assistant.io/)), which would have similar benefits as above mentioned use case. Additionally this would lower chance of external misuse and improved responsiveness and debugging of the home assistent settings. 
+Another use could be seen by combination of the personal cloud with a home assistant (e.g. open source [Home Assistant](https://www.home-assistant.io/)), which would have similar benefits as above mentioned use case. Additionally this would lower chance of external misuse and improved responsiveness and debugging of the home assistant settings. 
 
 One rather complex, DIY-style, application could be seen with development of custom security cameras. That could potentially be even connected to the previous use case. One could recycle old smartphone to serve as a security camera feed (e.g. over TLS) to the home server, where for example with framework like [OpenCV](https://opencv.org/) the images are processed for object detection or individuals identification. The personal cloud could play various roles in this model, from data processing, storing to interfacing such model using its API, and mitigating the thread of possibly sensitive data leakage.
 
@@ -105,22 +105,26 @@ For administration purposes the VM exposes a port for secure SSH connection.
 All in VM, and with Apache. Exposed ports for HTTPS and SSH connections.
 
 ### 3.1 Nextcloud
-Direct installation.
+Direct installation. ([nextcloud docs](https://docs.nextcloud.com/server/latest/admin_manual/installation/source_installation.html))
 
 TLS 1.3 to database
 
 HTTPS to clients
 
 ### 3.2 PostegreSQL
-Database in a docker container connected via TLS 1.3.
+Database in a docker container connected via TLS 1.3. The ip that Nextcloud is using is force in the configuration to use only TLS. So there is no possiblilty that the connection would not be encrypted. The certificate is also from Lets Encrypt and are copied during Docker init from diskdrive to PostgreSQL configuration directory and also TLS is put on with commandline option. 
+
+SSL must be used if the database is not on the same server as the Nextcloud instance, which is not currently the case with our project.
 
 ### 3.3 LDAP
-TBC
+TBC 
 
-### 3.4 Certification BOT
-Let's Encrypt certificate maintainer.
+It will be running inside Docker-container and shall use only encrypted communications.
 
-Interface? (http/https for updates? File system (saving cert on drive) for internal communication?)
+### 3.4 Certification BOT (Certbot by EFF)
+Let's Encrypt certificate maintainer. 
+
+The Certbot updates the cetrificate when necessary. It doesn't directly communicate with the rest of the system and only contacts Let's Encrypt for the cetrificate and then saves the certificate to Apache for the nextcloud to use and for PostgreSQL.
 
 ### 3.5 Clients
 Connection over HTTPS, web browser and android app tested. 
@@ -143,18 +147,30 @@ Already hinted in previous chapter
 
 ### 5.1 Nextcloud
 pros:
-- free
-- beginner friendly base and basic setup
+- free and open source
+- beginner-friendly basic setup
+- can run very lightweight (e.g. on a RasPi) but also scale very large
+- modular, can be extended with own or third-party extensions
 - decent documentation
 - auditability -  serves the privacy and security qualitative goal, as an end user can audit the system themself without requiring to put trust in third parties
 
 cons:
-- 
+- As everyone can see the code and put up their own systems, attacking it is easier. Attacks can be planned and tested without ever touching the target. For example some vulnerabilities might be found easier through reading the code and you don't have to worry about being found out when testing attacks, if you attack a system you yourself set up.
 
 ### 5.2 Let's Encrypt
-- the tyni script perhaps?
+pros:
+- free
+- very simple and quick
+- only requires a short script to use
 
-### 5.3 Optional nss-ca
+### 5.3 PostgreSQL
+pros:
+- free and open source
+
+cons:
+- not explicitly recommended for use with Nextcloud
+
+### 5.4 Optional nss-ca
 certificate chain generation and signing script. Based on widely used OpenSSL.
 - good enough for personal usage
 - openssl and crypto in general is not easy and user friendly
@@ -173,6 +189,7 @@ Bla bla bla OpenSSL crap and ambiguous documentation etc.
 - may be considered for self hosting somewhere and implementing e.g. WebRTC based audio/video chat
 
 ### 6.3 Infinite bandwidth
+- This should be less of a problem for personal use
 - TBC
 
 ### 6.4 Network is secure
@@ -205,7 +222,7 @@ Despite personal use as main target environment, it would be nice to have some k
 Nextcloud maintains stable docker container configuration, which is a good place to start.
 
 ### 7.2 Federation
-- add trusted to have multiple instances running together (federation)
+People on different servers can share files together. Though people still need to log into their own server, this can help extending the system and make communication between users of different servers possible.
 
 ### 7.3 Additional Services and Features
 Nextcloud provides user friendly *app store* where once can pick from many available services (e.g. something something, voice channel)
@@ -215,8 +232,12 @@ Further WebDAV standard complient API gives an opportunity to indenpendently cre
 *Data storage connection to NAS-like system or at least raid-0 configuration of the system.*
 
 ### 7.X Others
-- cetrificate
+- cetrificate: Cetrificate is needed for using https. For example Let's Encrypt is a service that can provide a cetrificate for an ip address. We used Certbot from EFF to get the cetrificate.
 
+- Restricted resources: The `standard.small` VM flavor (type) our project uses in the CSC Pouta has somewhat limited computing resources. To ensure that all the system components this project consists of were allocated adequate amount of memory and CPU cycles we ended up utilizing docker limitations.
+  - Docker accepts command line arguments to impose soft- and hard- memory limits and restrictions on CPU resources. The PostgreSQL container was graced with 384 MB with additional 384 MB available for swapping. CPU cycles utilization was constrained to atmost 50\% of one of the cores on the VM.   
+
+- We ran into problems with MariaDB and Nextcloud co-operation. The problem that rose when trying to connect to database was "Error while trying to initialise the database: An exception occurred while executing a query: SQLSTATE[HY000]: General error: 4047 InnoDB refuses to write tables with ROW_FORMAT=COMPRESSED or KEY_BLOCK_SIZE." We tried to debug it, but after some time with google and Nextcloud errordatabase we decided it would be easier to replace MariaDB with PostgreSQL. And thus we ended up using POstgreSQL instead of MariaDB.
 
 ## 8 Evaluation
 	Methodology used for evaluating the system performance, and the key results
