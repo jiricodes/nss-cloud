@@ -234,7 +234,10 @@ Further WebDAV standard complient API gives an opportunity to indenpendently cre
 ### 7.X Others
 - cetrificate: Cetrificate is needed for using https. For example Let's Encrypt is a service that can provide a cetrificate for an ip address. We used Certbot from EFF to get the cetrificate.
 
-- We ran into problems with MariaDB and Nextcloud co-operation. The problem that rose when trying to connect to database was "Error while trying to initialise the database: An exception occurred while executing a query: SQLSTATE[HY000]: General error: 4047 InnoDB refuses to write tables with ROW_FORMAT=COMPRESSED or KEY_BLOCK_SIZE." We tried to debug it, but after some time with google and Nextcloud errordatabase we decided it would be easier to replace MariaDB with PostgreSQL. And so we did.
+- Restricted resources: The `standard.small` VM flavor (type) our project uses in the CSC Pouta has somewhat limited computing resources. To ensure that all the system components this project consists of were allocated adequate amount of memory and CPU cycles we ended up utilizing docker limitations.
+  - Docker accepts command line arguments to impose soft- and hard- memory limits and restrictions on CPU resources. The PostgreSQL container was graced with 384 MB with additional 384 MB available for swapping. CPU cycles utilization was constrained to atmost 50\% of one of the cores on the VM.   
+
+- We ran into problems with MariaDB and Nextcloud co-operation. The problem that rose when trying to connect to database was "Error while trying to initialise the database: An exception occurred while executing a query: SQLSTATE[HY000]: General error: 4047 InnoDB refuses to write tables with ROW_FORMAT=COMPRESSED or KEY_BLOCK_SIZE." We tried to debug it, but after some time with google and Nextcloud errordatabase we decided it would be easier to replace MariaDB with PostgreSQL. And thus we ended up using POstgreSQL instead of MariaDB.
 
 ## 8 Evaluation
 	Methodology used for evaluating the system performance, and the key results
