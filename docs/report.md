@@ -229,7 +229,7 @@ Further WebDAV standard complient API gives an opportunity to indenpendently cre
 *Data storage connection to NAS-like system or at least raid-0 configuration of the system.*
 
 ### 7.X Others
-- cetrificate: Cetrificate is needed for using https. For example Let's Encrypt is a service that can provide a cetrificate for an ip address. We used [acme-tiny](https://github.com/diafygi/acme-tiny)
+- cetrificate: Cetrificate is needed for using https. For example Let's Encrypt is a service that can provide a cetrificate for an ip address. We used [acme-tiny](https://github.com/diafygi/acme-tiny) to get the cetrificate.
 
 
 ## 8 Evaluation
