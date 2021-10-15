@@ -112,12 +112,9 @@ Certbot maintains NSS-cloud's Let's Encrypt certificate. A valid certificate iss
 ## 4 Communication
 	Communication channel between the modules. For instance, do the modules use secure communication to communicate with each other, if yes, how?
 
-Already hinted in previous chapter
+The main mode of communication between modules is TLS 1.3, which the Nextcloud server and the PostgreSQL database use to communicate, as mentioned in previous sections. TLS stands for Transit Layer Security, and is a cryptographic communication protocol for computer networks. 
 
-- server and client over HTTPS
-	- how
 
-- nextcloud and database over TLS (TLS_AES_256_GCM_SHA384)
 
 Database in a docker container connected via TLS 1.3. The ip that Nextcloud is using is force in the configuration to use only TLS. So there is no possiblilty that the connection would not be encrypted. The certificate is also from Lets Encrypt and are copied during Docker init from diskdrive to PostgreSQL configuration directory and also TLS is put on with commandline option. SSL must be used if the database is not on the same server as the Nextcloud instance, which is not currently the case with our project.
 
