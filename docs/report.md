@@ -70,7 +70,7 @@ One rather complex, DIY-style, application could be seen with development of cus
 
 ![Figure 1](fig-1-nextcloud-setup.png)
 
-*Figure 1 - Scalable Nexcloud setup example. NFS (Network file system) as storage layer, an LDAP (Lightweight Directory Access Protocol) user directory, caching, databases and load balancer.  [\[NC-WP\]](#nc-wp)*
+*Figure 1 - Scalable Nexcloud setup example. Nextcloud server at the center, NFS (Network file system) as storage layer at the bottom, an LDAP (Lightweight Directory Access Protocol) user directory, REDIS caching, multiple databases and loadbalancer.  [\[NC-WP\]](#nc-wp)*
 
 The core of a Nextcloud setup is the Nextcloud server, which is a PHP-based web application for a Linux webserver such as Apache or NGINX. A typical deployment uses the "LAMP" stack: Linux, Apache, MySQL/MariaDB, and PHP. The database in the stack (MySQL/MariaDB are recommended but PostegreSQL is also supported) stores file sharing information, user details, application data, configuration and file information for the Nextcloud server. For the storing of files, Nextcloud's storage layer supports many server-mounted storage protocols, though an off-the-shelf NFS such as IBM Elastic Storage  or  RedHat  Ceph is recommended and most often used. The storage layer can be run on the same server as Nextcloud, or on a different server through the Nextcloud interface. [\[NC-WP\]](#nc-wp)
 
@@ -80,24 +80,14 @@ There are a variety of options for accessing and managing the data stored within
 
 <a id="figure-2">![Figure 2](nss-cloud-arch.png)</a>
 
-*Figure 2 - NSS cloud architecture. Clients connect to Nextcloud over HTTPS. Default OS filesystem is used. PostegreSQL running in a container utilised over TLS.*
+*Figure 2 - NSS cloud architecture. Clients connect to Nextcloud over HTTPS. Default OS filesystem is used as the storage layer. PostegreSQL database runs in a container accessed via TLS.*
 
-Since our primary goal is a personal use of the cloud infrastructure (see [1.3 Use Cases](#13-use-cases)) we do not expect high traffic environment and the whole system should comfortably fit on low spec consumer hardware (e.g. NUC). Therefore our practical application has been concluded as depicted in [Figure 2](#figure-2).
+Since our primary goal is a personal-use of the cloud server for file storage (see [1.3 Use Cases](#13-use-cases)), we do not expect a high-traffic environment and the whole system should be able to fit on low-spec consumer hardware (e.g. NUC). This means that many of the additional features depicted in the scalable Nextcloud setup[Figure 1](#figure-1) are unneccessary and can be eliminated to save on space, processing power, and complexity. Specifically, the REDIS caching server, the hardware loadbalancer, multiple seperate database servers, and even NFS for the storage layer are not required for our use case. Hence, our setup is structured as depicted in [Figure 2](#figure-2).
 
-The Nextcloud server system runs within a single virtual machine (VM). The VM is CSC cPouta standard.small [\[Pouta-Flavors\]](#pouta-flavors) flavor. It has 2 vCPUs and 2GB RAM allocated to it and it contains a minimal default installation of Ubuntu Server 20.04 operating system.  It is natively installed and configured (not in a container). The system utilises PostgreSQL database which is running inside a docker container hosted by the VM. Communication from and to the PostgreSQL server is done over TLS. The database has restricted resources access with 384MB for storage (additional 384MB swap space) and limited to upmost 0.5 vCPU usage. Linux native file system interface is used for object storage.
-
-
-Clients can connect using either the Nextcloud app available on major OS or via web browser interface. The connection is secured over HTTPS and utilises trustworthy automated Let's Encrypt certificate.
-
-For administration purposes the VM exposes a port for secure SSH connection.
+The Nextcloud server system is setup to run within a single virtual machine (VM). The VM is CSC cPouta standard.small [\[Pouta-Flavors\]](#pouta-flavors) flavor. It has 2 vCPUs and 2GB RAM allocated to it, and contains a minimal default installation of the Ubuntu Server 20.04 operating system.  The Nextcloud server is natively installed and configured on the VM's operating system, rather than in a container). The system's database is a PostgreSQL database running inside of a Docker container hosted by the VM. Communication to and from the PostgreSQL server is done over TLS. The database has restricted access to resources, with 384MB for storage (plus additional 384MB swap space) and is limited to at most 0.5 vCPU usage. The Linux native file system interface is used for object storage.
 
 
-	- The server system runs within a single VM CSC cPouta [aa](www) (Ubuntu 20.04, 2 vCPU, 2GB RAM)
-	- The Nextcloud has been natively installed and configured
-	- It utilises PostegreSQL which is running in constrained environment of a container
-		- 384MB storage with 384MB additional swap space from vHDD and allowed to use upmost 0.5 vCPU
-		- the communication protocol between Nextcloud and database is TLS 1.3 (TLS_AES_256_GCM_SHA384)
-	- Clients connect through web browser using secure HTTPS connection with Let's Encrypt certificate
+Clients can connect using either the Nextcloud app available on major OS or via web browser interface. The connection is secured over HTTPS and utilises trustworthy automated Let's Encrypt certificate. For administration purposes, the VM exposes a port for secure SSH connection.
 
 
 ## 3 Components
