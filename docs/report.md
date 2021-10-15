@@ -80,7 +80,7 @@ There are a variety of options for accessing and managing the data stored within
 
 <a id="figure-2">![Figure 2](nss-cloud-arch.png)</a>
 
-*Figure 2 - NSS cloud architecture. Clients connect to Nextcloud over HTTPS. Default OS filesystem is used as the storage layer. PostegreSQL database runs in a container accessed via TLS.*
+*Figure 2 - NSS cloud architecture. Clients connect to Nextcloud over HTTPS. The default OS filesystem is used as the storage layer. The PostgreSQL database runs in a container accessed via TLS.*
 
 Since our primary goal is a personal-use of the cloud server for file storage (see [1.3 Use Cases](#13-use-cases)), we do not expect a high-traffic environment and the whole system should be able to fit on low-spec consumer hardware (e.g. NUC). This means that many of the additional features depicted in the scalable Nextcloud setup[Figure 1](#figure-1) are unneccessary and can be eliminated to save on space, processing power, and complexity. Specifically, the REDIS caching server, the hardware loadbalancer, multiple seperate database servers, and even NFS for the storage layer are not required for our use case. Hence, our setup is structured as depicted in [Figure 2](#figure-2).
 
@@ -91,17 +91,14 @@ Clients can connect using either the Nextcloud app available on all major operat
 
 
 ## 3 Components
-	Components / Module description including the interfaces exposed between the modules
 
 As stated above, the system as a whole runs within a VM running Ubuntu Server 20.04 containing an Apache webserver. For administration purposes, the VM itself exposes a port to the Internet for secure SSH connection. Ports are also exposed to allow clients to connect to the webserver via HTTPS and manage files using Nextcloud's web interface.
 
 ### 3.1 Nextcloud
-NSS-cloud's most important component is the Nextcloud server instance. It is directly installed ([nextcloud docs](https://docs.nextcloud.com/server/latest/admin_manual/installation/source_installation.html)) in the VM inside the webserver, and the installation also comes bundled with all of the required PHP modules. The Nextcloud server is primarily responsible for managing file access and processing for NSS-cloud, acting as the mediator between users/clients and the files stored on the server. The exposed ports in the webserver allow clients to connect to the Nextcloud server via HTTPS and access/manage the files stored within. Also, as mentioned in [Section 2.1](#21-nextcloud-server-architecture), the Nextcloud server uses a database (in this case, PostgreSQL) to store file sharing information, user details, application data, configuration and file information. It connects to this database, hosted on the same VM, using TLS 1.3.
+NSS-cloud's most important component is the Nextcloud server instance. It is directly installed ([nextcloud docs](https://docs.nextcloud.com/server/latest/admin_manual/installation/source_installation.html)) in the VM inside the webserver, and the installation also comes bundled with all of the required PHP modules. The Nextcloud server is primarily responsible for managing file access and processing for NSS-cloud, acting as the mediator between users/clients and the files stored on the server. The exposed ports in the webserver allow clients to connect to the Nextcloud server via HTTPS and access/manage the files stored within. The Nextcloud server also requires the usage of a database, which it connects to using TLS 1.3.
 
 ### 3.2 PostgreSQL
-Database in a docker container connected via TLS 1.3. The ip that Nextcloud is using is force in the configuration to use only TLS. So there is no possiblilty that the connection would not be encrypted. The certificate is also from Lets Encrypt and are copied during Docker init from diskdrive to PostgreSQL configuration directory and also TLS is put on with commandline option. 
-
-SSL must be used if the database is not on the same server as the Nextcloud instance, which is not currently the case with our project.
+The database used by NSS-cloud for its Nextcloud server instance is a PostgreSQL database. It is hosted on the same VM as the Nextcloud server, though within a Docker container. The database is used by the the Nextcloud server to store file sharing information, user details, application data, configuration and file information, as mentioned in [Section 2.1](#21-nextcloud-server-architecture). It is only connected to the Nextcloud server outside the Docker container, via TLS 1.3
 
 ### 3.3 LDAP
 TBC 
@@ -121,6 +118,8 @@ Already hinted in previous chapter
 	- how
 
 - nextcloud and database over TLS (TLS_AES_256_GCM_SHA384)
+
+Database in a docker container connected via TLS 1.3. The ip that Nextcloud is using is force in the configuration to use only TLS. So there is no possiblilty that the connection would not be encrypted. The certificate is also from Lets Encrypt and are copied during Docker init from diskdrive to PostgreSQL configuration directory and also TLS is put on with commandline option. SSL must be used if the database is not on the same server as the Nextcloud instance, which is not currently the case with our project.
 
 
 ## 5 Open source modules evaluation
