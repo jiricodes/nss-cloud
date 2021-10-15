@@ -147,16 +147,7 @@ Already hinted in previous chapter
 *Open source is the way forward and any proprietary solution should be heavily build on open source. No need to keep reinventing wheel. (TBC reference based open source rant?)*
 
 ### 5.1 Nextcloud
-pros:
-- free and open source
-- beginner-friendly basic setup
-- can run very lightweight (e.g. on a RasPi) but also scale very large
-- modular, can be extended with own or third-party extensions
-- decent documentation
-- auditability -  serves the privacy and security qualitative goal, as an end user can audit the system themself without requiring to put trust in third parties
-
-cons:
-- As everyone can see the code and put up their own systems, attacking it is easier. Attacks can be planned and tested without ever touching the target. For example some vulnerabilities might be found easier through reading the code and you don't have to worry about being found out when testing attacks, if you attack a system you yourself set up.
+One major benefit of Nextcloud is that it is free and open source, which makes it affordable for individual consumers (and students). As we have mentioned above, privacy and security are two major consideration when it comes to a personal cloud, and the fact that Nextcloud is open source makes it easy for end users or other third parties to audit the software, without having to rely only on trusting the Nextcloud organization when they say their software is secure. This can also be a drawback, however, because the code is also visible to potential malicious parties, who can easily read the code and find bugs or other weaknesses that can be exploited. Another benefit for consumers is that Nextcloud can run very lightweight on inexpensive, easy to acquire hardware such as a RaspberryPi, though also offers the option to scale up very large for those who might need it. On the development side, the modular architecture of Nextcloud allows developers like our group the option to extend it with custom features, or with other useful extensions developed by third parties. Nextcloud also has very easy, beginner-friendly basic setup, and fairly comprehensive documentation that makes it easy to work with, even as a newcomer.
 
 ### 5.2 Let's Encrypt
 pros:
