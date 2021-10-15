@@ -61,7 +61,7 @@ To what end a user would like to utilise the system may widely vary. However, we
 
 The personal cloud can be simply used as a storage and sharing platform as any other widely used platform (Google, iCloud etc.). However, due to its locality and low amount of users the consumer benefits by relatively high privacy guarantees and potentially much higher perfomance (HW dependant). Of course for the cost of greater availability outside of the local network. The tradeoff can be somewhat balanced by self hosting the system, which on the other hand increases the attack surface.
 
-Another use could be seen by combination of the personal cloud with a home assistant (e.g. open source [Home Assistant](https://www.home-assistant.io/)), which would have similar benefits as above mentioned use case. Additionally this would lower chance of external misuse and improved responsiveness and debugging of the home assistent settings. 
+Another use could be seen by combination of the personal cloud with a home assistant (e.g. open source [Home Assistant](https://www.home-assistant.io/)), which would have similar benefits as above mentioned use case. Additionally, this would lower chance of external misuse and improved responsiveness and debugging of the home assistent settings. 
 
 One rather complex, DIY-style, application could be seen with development of custom security cameras. That could potentially be even connected to the previous use case. One could recycle old smartphone to serve as a security camera feed (e.g. over TLS) to the home server, where for example with framework like [OpenCV](https://opencv.org/) the images are processed for object detection or individuals identification. The personal cloud could play various roles in this model, from data processing, storing to interfacing such model using its API, and mitigating the thread of possibly sensitive data leakage.
 
@@ -87,22 +87,18 @@ Since our primary goal is a personal-use of the cloud server for file storage (s
 The Nextcloud server system is setup to run within a single virtual machine (VM). The VM is CSC cPouta standard.small [\[Pouta-Flavors\]](#pouta-flavors) flavor. It has 2 vCPUs and 2GB RAM allocated to it, and contains a minimal default installation of the Ubuntu Server 20.04 operating system.  The Nextcloud server is natively installed and configured on the VM's operating system, rather than in a container). The system's database is a PostgreSQL database running inside of a Docker container hosted by the VM. Communication to and from the PostgreSQL server is done over TLS. The database has restricted access to resources, with 384MB for storage (plus additional 384MB swap space) and is limited to at most 0.5 vCPU usage. The Linux native file system interface is used for object storage.
 
 
-Clients can connect using either the Nextcloud app available on major OS or via web browser interface. The connection is secured over HTTPS and utilises trustworthy automated Let's Encrypt certificate. For administration purposes, the VM exposes a port for secure SSH connection.
+Clients can connect using either the Nextcloud app available on all major operating systems or via the web browser interface. 
 
 
 ## 3 Components
 	Components / Module description including the interfaces exposed between the modules
 
-All in VM, and with Apache. Exposed ports for HTTPS and SSH connections.
+As stated above, the system as a whole runs within a VM running Ubuntu Server 20.04 containing an Apache webserver. For administration purposes, the VM itself exposes a port to the Internet for secure SSH connection. Ports are also exposed to allow clients to connect to the webserver via HTTPS and manage files using Nextcloud's web interface.
 
 ### 3.1 Nextcloud
-Direct installation. ([nextcloud docs](https://docs.nextcloud.com/server/latest/admin_manual/installation/source_installation.html))
+NSS-cloud's most important component is the Nextcloud server instance. It is directly installed ([nextcloud docs](https://docs.nextcloud.com/server/latest/admin_manual/installation/source_installation.html)) in the VM inside the webserver, and the installation also comes bundled with all of the required PHP modules. The Nextcloud server is primarily responsible for managing file access and processing for NSS-cloud, acting as the mediator between users/clients and the files stored on the server. The exposed ports in the webserver allow clients to connect to the Nextcloud server via HTTPS and access/manage the files stored within. Also, as mentioned in [Section 2.1](#21-nextcloud-server-architecture), the Nextcloud server uses a database (in this case, PostgreSQL) to store file sharing information, user details, application data, configuration and file information. It connects to this database, hosted on the same VM, using TLS 1.3.
 
-TLS 1.3 to database
-
-HTTPS to clients
-
-### 3.2 PostegreSQL
+### 3.2 PostgreSQL
 Database in a docker container connected via TLS 1.3. The ip that Nextcloud is using is force in the configuration to use only TLS. So there is no possiblilty that the connection would not be encrypted. The certificate is also from Lets Encrypt and are copied during Docker init from diskdrive to PostgreSQL configuration directory and also TLS is put on with commandline option. 
 
 SSL must be used if the database is not on the same server as the Nextcloud instance, which is not currently the case with our project.
@@ -113,12 +109,8 @@ TBC
 It will be running inside Docker-container and shall use only encrypted communications.
 
 ### 3.4 Certification BOT (Certbot by EFF)
-Let's Encrypt certificate maintainer. 
+Certbot maintains NSS-cloud's Let's Encrypt certificate. A valid certificate issued by a Certificate Authority that proves one has control over a domain is required to use secure protocols such as TLS and HTTPS (which is based on TLS). Let's Encrypt offers a free certificate service, however each certificate is only valid for 90 days, so Certbot automatically renews the certificate when it expires. It has minimal contact with most of the system, and only contacts Let's Encrypt to renew the certificates and then saves them to Apache for Nextcloud and PostgreSQL to use for TLS and HTTPS connections.
 
-The Certbot updates the cetrificate when necessary. It doesn't directly communicate with the rest of the system and only contacts Let's Encrypt for the cetrificate and then saves the certificate to Apache for the nextcloud to use and for PostgreSQL.
-
-### 3.5 Clients
-Connection over HTTPS, web browser and android app tested. 
 
 ## 4 Communication
 	Communication channel between the modules. For instance, do the modules use secure communication to communicate with each other, if yes, how?
