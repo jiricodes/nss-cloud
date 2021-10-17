@@ -95,15 +95,15 @@ Clients can connect using either the Nextcloud app available on all major operat
 As stated above, the system as a whole runs within a VM running Ubuntu Server 20.04 containing an Apache webserver. For administration purposes, the VM itself exposes a port to the Internet for secure SSH connection. Ports are also exposed to allow clients to connect to the webserver via HTTPS and manage files using Nextcloud's web interface.
 
 ### 3.1 Nextcloud
-NSS-cloud's most important component is the Nextcloud server instance. It is directly installed ([nextcloud docs](https://docs.nextcloud.com/server/latest/admin_manual/installation/source_installation.html)) in the VM inside the webserver, and the installation also comes bundled with all of the required PHP modules. The Nextcloud server is primarily responsible for managing file access and processing for NSS-cloud, acting as the mediator between users/clients and the files stored on the server. The exposed ports in the webserver allow clients to connect to the Nextcloud server via HTTPS and access/manage the files stored within. The Nextcloud server also requires the usage of a database, which it connects to using TLS 1.3.
+NSS-cloud's most important component is the Nextcloud server instance. It is directly installed ([Nextcloud docs](https://docs.nextcloud.com/server/latest/admin_manual/installation/source_installation.html)) in the VM inside the webserver, and the installation also comes bundled with all of the required PHP modules. The Nextcloud server is primarily responsible for managing file access and processing for NSS-cloud, acting as the mediator between users/clients and the files stored on the server. The exposed ports in the webserver allow clients to connect to the Nextcloud server via HTTPS and access/manage the files stored within. The Nextcloud server also requires the usage of a database, which it connects to using TLS 1.3.
 
 ### 3.2 PostgreSQL
 The database used by NSS-cloud for its Nextcloud server instance is a PostgreSQL database. It is hosted on the same VM as the Nextcloud server, though within a Docker container. The database is used by the the Nextcloud server to store file sharing information, user details, application data, configuration and file information, as mentioned in [Section 2.1](#21-nextcloud-server-architecture). It is only connected to the Nextcloud server outside the Docker container, via TLS 1.3
 
-### 3.3 LDAP
-TBC 
+The server-side is also encrypted so all files stored in PostgreSQL database are even more secure.
 
-It will be running inside Docker-container and shall use only encrypted communications.
+### 3.3 LDAP
+LDAP was chosen as it is vendor-neutral system that has a compatible php version, it's recommended for Nextcloud and it's simple and lightweight. It will be running inside Docker-container and shall use only encrypted communications and it's used for identifying users. 
 
 ### 3.4 Certification BOT (Certbot by EFF)
 Certbot maintains NSS-cloud's Let's Encrypt certificate. A valid certificate issued by a Certificate Authority that proves one has control over a domain is required to use secure protocols such as TLS and HTTPS (which is based on TLS). Let's Encrypt offers a free certificate service, however each certificate is only valid for 90 days, so Certbot automatically renews the certificate when it expires. It has minimal contact with most of the system, and only contacts Let's Encrypt to renew the certificates and then saves them to Apache for Nextcloud and PostgreSQL to use for TLS and HTTPS connections.
@@ -131,11 +131,7 @@ One major benefit of Nextcloud is that it is free and open source, which makes i
 It is difficult to find many flaws with Let's Encrypt, which is free, simple, quick, and very well documented. One downside arguably is that Let's Encrypt certificates only last 90 days, which can lead to downtime if they are not renewed on time since TLS and HTTPS connections will stop working without a valid certificate. However, using the EFF's Certbot (also free and open source) as we did, this becomes a trivial issue as Certbot automatically takes care of renewing the certificates when they expire. Another possible downside is the fact that Let's Encrypt only offers domain-validated certificates, but the other certificate types (Extended validation and organization validation) are not at all neccessary for the scope of this project. For our purposes, Let's Encrypt was clearly the best choice and had no significant downsides.
 
 ### 5.3 PostgreSQL
-pros:
-- free and open source
-
-cons:
-- not explicitly recommended for use with Nextcloud
+PostgreSQL is a good choice for a project like this firstly, because it's free and opne source. It's also known to have quite good performance and fast data access, which are both good things thought they might not be vital in this case. It also has improved data integrity, as it doesn't change data by automatically correcting data types. Though some may say that the convinience of automatic correction is sometimes worth the drop in data integrity. PosgreSQL also has some optimixation features like Partial Indexing, but those probably aren't needed in a personal cloud. The use of PostgreSQL with Nextcloud isn't as clear as some others as it isn't explicitly recommended for use with Nextcloud. Also for a small project it might be more robust than necessary and for example mariaDB would smaller in size. Lastly PostgreSQL doesn't support table partitioning, which could sometimes be a nice feature to have.
 
 ### 5.4 Optional nss-ca
 certificate chain generation and signing script. Based on widely used OpenSSL.
