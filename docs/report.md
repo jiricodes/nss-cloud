@@ -98,9 +98,7 @@ As stated above, the system as a whole runs within a VM running Ubuntu Server 20
 NSS-cloud's most important component is the Nextcloud server instance. It is directly installed ([Nextcloud docs](https://docs.nextcloud.com/server/latest/admin_manual/installation/source_installation.html)) in the VM inside the webserver, and the installation also comes bundled with all of the required PHP modules. The Nextcloud server is primarily responsible for managing file access and processing for NSS-cloud, acting as the mediator between users/clients and the files stored on the server. The exposed ports in the webserver allow clients to connect to the Nextcloud server via HTTPS and access/manage the files stored within. The Nextcloud server also requires the usage of a database, which it connects to using TLS 1.3.
 
 ### 3.2 PostgreSQL
-The database used by NSS-cloud for its Nextcloud server instance is a PostgreSQL database. It is hosted on the same VM as the Nextcloud server, though within a Docker container. The database is used by the the Nextcloud server to store file sharing information, user details, application data, configuration and file information, as mentioned in [Section 2.1](#21-nextcloud-server-architecture). It is only connected to the Nextcloud server outside the Docker container, via TLS 1.3
-
-The server-side is also encrypted so all files stored in PostgreSQL database are even more secure.
+The database used by NSS-cloud for its Nextcloud server instance is a PostgreSQL database. It is hosted on the same VM as the Nextcloud server, though within a Docker container. The database is used by the the Nextcloud server to store file sharing information, user details, application data, configuration and file information, as mentioned in [Section 2.1](#21-nextcloud-server-architecture). It is only connected to the Nextcloud server outside the Docker container, via TLS 1.3. To further enhance the security and privacy all the files on server side are encrypted and so can't directly accessed even if the hardware is accessed the hard drives read.
 
 ### 3.3 LDAP
 LDAP was chosen as it is vendor-neutral system that has a compatible php version, it's recommended for Nextcloud and it's simple and lightweight. It will be running inside Docker-container and shall use only encrypted communications and it's used for identifying users. 
@@ -145,6 +143,7 @@ Bla bla bla OpenSSL crap and ambiguous documentation etc.
 	Which of the fallacies of the distributed system does your system violate, and how?
 
 ### 6.1 Network is reliable
+The network doesn't allways be reliable for our application, but if network failures happen too often or if the file that is being downloaded/uploaded is very big things can get annoying. Downloading and uploading are prone to failure if the network isn't reliable enough which can lead to the entire process being restarted. This becomes increasingly annoying as the size of the file grows and network reliability goes down. Having to restart 1 hour long download multiple times starts to eat away at person's will to live.
 - check if nextcoud mitigades e.g. upload interrupts / session resumption etc (I'd assume so since basic HTTPS config generally supports this on lower levels)
 
 ### 6.2 Latency is zero
@@ -152,8 +151,7 @@ Bla bla bla OpenSSL crap and ambiguous documentation etc.
 - may be considered for self hosting somewhere and implementing e.g. WebRTC based audio/video chat
 
 ### 6.3 Infinite bandwidth
-- This should be less of a problem for personal use
-- TBC
+Our solutions don't have much to do with bandwidth as personal cloud should not be clogged up by multiple users, but we naturally avoid having too much unnecessary data loading that could slow down the user's experience.
 
 ### 6.4 Network is secure
 Our system secures client communication with HTTPS and internal with TLS. Further consideration could be made to run the system in HSM based secure VM (e.g AMD-SEV/SNP, Intel TDX or Arm CCA in the future) or shifting the system to a container rather than VM and bootstrapping it with HSM (Intel SGX, RISC-V Keystone, TPM 2.0 etc.). This would secure internal communication and compute to the extent that even a physical access to the system would not reveal any sensitive information*.
@@ -166,10 +164,10 @@ Our system secures client communication with HTTPS and internal with TLS. Furthe
 ### 6.6 There is one administrator
 Nextcloud support multiple administrators, and further specified roles can be delegated to support customized administration topology. [\[NC-WP\]](#nc-wp)
 
-The underlying OS (Ubuntu 20.04) can be as well configured to support multiple users with various administrative privileges. **(Some Reference here)**
+The underlying OS (Ubuntu 20.04) also supports multiple users which can belong to different administrative groups. These users can be accessed through ssh and multiple users can connect at the same time. **(Some Reference here)**
 
 ### 6.7 Transport cost is zero
-- TBC (I think a. for our use case of local network we can more or less assume this, b. in Finland the internet access is almost free so zero *additional/solution specific* costs for our consumers?)
+For personal cloud this is largely irrelevant. The infrastructure of personal home server wouldn't normally be that big and when renting cloud services, personal server doesn't need unpredictable scaleable solutions. In the data transfer itself, in finland, the only thing that usually costs something is the bandwidth and not the amount of data (at least on personal scale). For users that have limited data, the thing that can be done is that loading unecessary data is avoided. For eample only small previews of the images are downloaded automatically. (is data compressed for transfer?)
 
 ### 6.8 Network is homogeneous
 The Nextcloud and our solution supports various communication protocols and APIs.
