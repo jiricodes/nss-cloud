@@ -145,6 +145,7 @@ The network doesn't allways be reliable for our application, but if network fail
 - check if nextcoud mitigades e.g. upload interrupts / session resumption etc (I'd assume so since basic HTTPS config generally supports this on lower levels)
 
 ### 6.2 Latency is zero
+If the personal cloud is in local network latency should be very small. Even if the latency isn't small, the application itself doesn't really care about latency as there are no latency critical parts. Any extreme cases can be handled by the networking protocols, such as HTTPS.
 - personal network (local), we do not care so much about the latency
 - may be considered for self hosting somewhere and implementing e.g. WebRTC based audio/video chat
 
