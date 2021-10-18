@@ -158,7 +158,7 @@ Our system secures client communication with HTTPS and internal with TLS. Furthe
 *We're aware of side channel attacks vulnerabilities of mentioned systems and their are out of the scope of this project.
 
 ### 6.5 Topology doesn’t change
-- TBC
+Since all of NSS-cloud's components are within a VM, the topology of the "inner" network does not change. However, the "portability" of a VM means that there is a lot of potential for the network outside the VM to change, sometimes drastically. For example, a user may host the VM on their local machine, but then decide to move it to a remote hosting service. From the perspective of the VM, the exterior network topology completely changes when it moves from the local machine to the remote host.
 
 ### 6.6 There is one administrator
 Nextcloud support multiple administrators, and further specified roles can be delegated to support customized administration topology. [\[NC-WP\]](#nc-wp)
