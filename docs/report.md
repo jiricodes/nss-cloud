@@ -116,9 +116,13 @@ The ip that Nextcloud is using is force in the configuration to use only TLS. So
 
 
 ## 5 Open source modules evaluation
-	Pros and cons of the open-source components/modules used for developing the system, and the modules/components you have built (3 points)
+Richard Stallman (GNU, FSF) has stated:
 
-*Open source is the way forward and any proprietary solution should be heavily build on open source. No need to keep reinventing wheel. (TBC reference based open source rant?)*
+> Free software is a matter of liberty, not price. You should think of *free* as in *'free speech,'* not as in *'free beer'*.
+
+A quotation that has shaped minds of developers over decades and became the foundation of open source world. This philosophy has enabled modern complex systems to exist efficiently and will continue to drive the software industry forward.[\[FORB-OS\]](#forb-os) Also it is important to understand that *free software* does not mean *noncommercial*, on the contrary a free code must be available for commercial use. [\[GNU-FREE\]](#gnu-free)
+
+One complication with modern open world systems, at least from beginners perspective, is that there is many licences that define *open source* or *free software* and their compatibilites largely varies. Therefore, selecting a correct lincense for your own open source project may not be trivial.
 
 ### 5.1 Nextcloud
 One major benefit of Nextcloud is that it is free and open source, which makes it affordable for individual consumers (and students). As we have mentioned above, privacy and security are two major consideration when it comes to a personal cloud, and the fact that Nextcloud is open source makes it easy for end users or other third parties to audit the software, without having to rely only on trusting the Nextcloud organization when they say their software is secure. This can also be a drawback, however, because the code is also visible to potential malicious parties, who can easily read the code and find bugs or other weaknesses that can be exploited. Another benefit for consumers is that Nextcloud can run very lightweight on inexpensive, easy to acquire hardware such as a RaspberryPi, though also offers the option to scale up very large for those who might need it. On the development side, the modular architecture of Nextcloud allows developers like our group the option to extend it with custom features, or with other useful extensions developed by third parties. Nextcloud also has very easy, beginner-friendly basic setup, and fairly comprehensive documentation that makes it easy to work with, even as a newcomer.
@@ -193,13 +197,6 @@ Further WebDAV standard complient API gives an opportunity to independently crea
 
 *Data storage connection to NAS-like system or at least raid-0 configuration of the system.*
 
-### 7.X Others
-- cetrificate: Cetrificate is needed for using https. For example Let's Encrypt is a service that can provide a cetrificate for an ip address. We used Certbot from EFF to get the cetrificate.
-
-- Restricted resources: The `standard.small` VM flavor (type) our project uses in the CSC Pouta has somewhat limited computing resources. To ensure that all the system components this project consists of were allocated adequate amount of memory and CPU cycles we ended up utilizing docker limitations.
-  - Docker accepts command line arguments to impose soft- and hard- memory limits and restrictions on CPU resources. The PostgreSQL container was graced with 384 MB with additional 384 MB available for swapping. CPU cycles utilization was constrained to atmost 50\% of one of the cores on the VM.   
-
-- We ran into problems with MariaDB and Nextcloud co-operation. The problem that rose when trying to connect to database was "Error while trying to initialise the database: An exception occurred while executing a query: SQLSTATE[HY000]: General error: 4047 InnoDB refuses to write tables with ROW_FORMAT=COMPRESSED or KEY_BLOCK_SIZE." We tried to debug it, but after some time with google and Nextcloud errordatabase we decided it would be easier to replace MariaDB with PostgreSQL. And thus we ended up using POstgreSQL instead of MariaDB.
 
 ## 8 Evaluation
 	Methodology used for evaluating the system performance, and the key results
@@ -212,7 +209,16 @@ Further WebDAV standard complient API gives an opportunity to independently crea
 
 Nextcloud feels like a great DIY cloud playground.
 
+- Restricted resources: The `standard.small` VM flavor (type) our project uses in the CSC Pouta has somewhat limited computing resources. To ensure that all the system components this project consists of were allocated adequate amount of memory and CPU cycles we ended up utilizing docker limitations.
+- Docker accepts command line arguments to impose soft- and hard- memory limits and restrictions on CPU resources. The PostgreSQL container was graced with 384 MB with additional 384 MB available for swapping. CPU cycles utilization was constrained to atmost 50\% of one of the cores on the VM.   
+
+- We ran into problems with MariaDB and Nextcloud co-operation. The problem that rose when trying to connect to database was "Error while trying to initialise the database: An exception occurred while executing a query: SQLSTATE[HY000]: General error: 4047 InnoDB refuses to write tables with ROW_FORMAT=COMPRESSED or KEY_BLOCK_SIZE." We tried to debug it, but after some time with google and Nextcloud errordatabase we decided it would be easier to replace MariaDB with PostgreSQL. And thus we ended up using POstgreSQL instead of MariaDB.
 
 ## Resources
 <a id="nc-wp">\[NC-WP\]</a> - Nextcloud Solution Architecture whitepaper. [Link](https://nextcloud.com/media/wp135098u/Architecture-Whitepaper-WebVersion-072018.pdf). Accessed 09.10.2021.
-<a id="pouta-flavors">\[Pouta-flavors\]</a> - Virtual machine flavors and billing unit rates. cPouta documentation. - [Link](https://docs.csc.fi/cloud/pouta/vm-flavors-and-billing/). Accessed 12.10.2021
+
+<a id="pouta-flavors">\[Pouta-flavors\]</a> - Virtual machine flavors and billing unit rates. cPouta documentation. [Link](https://docs.csc.fi/cloud/pouta/vm-flavors-and-billing/). Accessed 12.10.2021
+
+<a id="gnu-free">\[GNU-FREE\]</a> - GNU Philosophy: What is Free Software?. [Link](https://www.gnu.org/philosophy/free-sw.en.html). Accessed 18.10.2021
+
+<a id="forb-os">\[FORB-OS\]</a> - Why Is Open-Source So Important? Part One: Principles And Parity. [Link](https://www.forbes.com/sites/charlestowersclark/2019/09/24/why-is-open-source-so-important-part-one-principles-and-parity/?sh=6c89bbd861f7). Accessed 18.10.2021
