@@ -1,5 +1,8 @@
 # NSS cloud configuration files and scripts
 
+## Nextcloud
+The configuration file [`nextcloud.conf`](nextcloud.conf) is stripped classified information. Please refer to [Nextcloud's documentation](https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/index.html) for detailed information.
+
 ## Postgresql
 The configuration can be found in [pg_hba.conf](pg_hba.conf) and docker start script in [postgresql.sh](postgresql.sh).
 
