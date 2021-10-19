@@ -133,7 +133,8 @@ It is difficult to find many flaws with Let's Encrypt, which is free, simple, qu
 ### 5.3 PostgreSQL
 As with many other components used in this project, PostgreSQL is free and open source. It's known to have quite good performance and fast data access, which is beneficial for running on potentially lower-spec consumer hardware. It also has improved data integrity, as it doesn't change data by automatically correcting data types. However, this can also be a downside to some, as the convenience of automatic correction is sometimes worth the drop in data integrity. PostgreSQL also has some optimization features such as Partial Indexing, but those probably aren't needed in a personal cloud. One major downside related to our specific architecture is that the usage of PostgreSQL with Nextcloud isn't as smooth as with MariaDB/mySQL, as PostgreSQL isn't explicitly recommended for use with Nextcloud. However, due to some issues detailed later on in the report, PostgreSQL had to be settled for. Also, for a small project, PostgreSQL may be more robust than necessary, and other options such as mariaDB could offer smaller database sizes in exchange, for example. Lastly, PostgreSQL doesn't support table partitioning, which could sometimes be a nice feature to have.
 
-### 5.4 Optional nss-ca
+### 5.4 NSS-ca
+The [nss-ca](../nss_ca)
 certificate chain generation and signing script. Based on widely used OpenSSL.
 - good enough for personal usage
 - openssl and crypto in general is not easy and user friendly
