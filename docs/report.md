@@ -143,38 +143,35 @@ The OpenSSL is well known and widely used open source crypto library and tools c
 
 ## 6 Fallacies
 
-The Eight Fallacies (set of assertions) of Distributed Computing were authored by L Peter Deutsch and others from Sun Microsystems in 1990's. [\[FALL-10\]](#fall-10) We describe NSS cloud position in regards to each of the fallacies.
+The Eight Fallacies (set of assertions) of Distributed Computing were authored by L Peter Deutsch and others from Sun Microsystems in 1990's. [\[FALL-10\]](#fall-10) We describe NSS-cloud's position with regards to each of the fallacies.
 
 ### 6.1 Network is reliable
 The network doesn't allways be reliable for our application, but if network failures happen too often or if the file that is being downloaded/uploaded is very big things can get annoying. Downloading and uploading are prone to failure if the network isn't reliable enough which can lead to the entire process being restarted. This becomes increasingly annoying as the size of the file grows and network reliability goes down. Having to restart 1 hour long download multiple times starts to eat away at person's will to live.
-- check if nextcoud mitigades e.g. upload interrupts / session resumption etc (I'd assume so since basic HTTPS config generally supports this on lower levels)
 
 ### 6.2 Latency is zero
-If the personal cloud is in local network latency should be very small. Even if the latency isn't small, the application itself doesn't really care about latency as there are no latency critical parts. Any extreme cases can be handled by the networking protocols, such as HTTPS.
-- personal network (local), we do not care so much about the latency
-- may be considered for self hosting somewhere and implementing e.g. WebRTC based audio/video chat
+The components of NSS-cloud are all within the same VM, so the latency between them will be effectively zero. When connecting with the client application, ff the personal cloud is hosted within the local network, then the latency will also be very low. However, if the personal cloud is being hosted remotely, then connecting with the client will lead to some latency. This is not a huge concern, though, since there are no latency-critical parts of the application, and particularly bad cases can be handled by the networking protocols.
 
 ### 6.3 Infinite bandwidth
-Our solutions don't have much to do with bandwidth as personal cloud should not be clogged up by multiple users, but we naturally avoid having too much unnecessary data loading that could slow down the user's experience.
+Bandwidth should not be a large issue for our system as a personal cloud should not be seeing very much usage from multiple concurrent users, but unneccessary data loading is avoided as a rule so that the user experience can remain smooth.
 
 ### 6.4 Network is secure
-Our system secures client communication with HTTPS and internal with TLS. Further consideration could be made to run the system in HSM based secure VM (e.g AMD-SEV/SNP, Intel TDX or Arm CCA in the future) or shifting the system to a container rather than VM and bootstrapping it with HSM (Intel SGX, RISC-V Keystone, TPM 2.0 etc.). This would secure internal communication and compute to the extent that even a physical access to the system would not reveal any sensitive information*.
+Our system makes every effort to use secure communication whenever possible, with client communication via HTTPS and internal communication with TLS. Further consideration could be made to run the system in HSM^based secure VM (e.g AMD-SEV/SNP, Intel TDX or Arm CCA in the future) or shifting the system to a container rather than VM and bootstrapping it with HSM (Intel SGX, RISC-V Keystone, TPM 2.0 etc.). This would secure internal communication and compute to the extent that even physical access to the system would not reveal any sensitive information*.
 
-*We're aware of side channel attacks vulnerabilities of mentioned systems and their are out of the scope of this project.
+*We're aware of potential vulnerabilities that allow side-channel attacks of the aforementioned systems, however they are out of the scope of this project.
 
 ### 6.5 Topology doesn’t change
 Since all of NSS-cloud's components are within a VM, the topology of the "inner" network does not change. However, the "portability" of a VM means that there is a lot of potential for the network outside the VM to change, sometimes drastically. For example, a user may host the VM on their local machine, but then decide to move it to a remote hosting service. From the perspective of the VM, the exterior network topology completely changes when it moves from the local machine to the remote host.
 
 ### 6.6 There is one administrator
-Nextcloud support multiple administrators, and further specified roles can be delegated to support customized administration topology. [\[NC-WP\]](#nc-wp)
+As a personal cloud, most users will likely only have one adminstrator (themselves), but if they so desire, Nextcloud supports designating multiple administrators, and further-specified roles can be delegated to support customized administration topology. [\[NC-WP\]](#nc-wp)
 
-The underlying OS (Ubuntu 20.04) also supports multiple users which can belong to different administrative groups. These users can be accessed through ssh and multiple users can connect at the same time. **(Some Reference here)**
+Additionally, the underlying OS (Ubuntu 20.04) also supports multiple users which can belong to different administrative groups. These users can be accessed through ssh and multiple users can connect at the same time. [\[UBUNTU-USERS\]](#ubuntu-users)
 
 ### 6.7 Transport cost is zero
-For personal cloud this is largely irrelevant. The infrastructure of personal home server wouldn't normally be that big and when renting cloud services, personal server doesn't need unpredictable scaleable solutions. In the data transfer itself, in finland, the only thing that usually costs something is the bandwidth and not the amount of data (at least on personal scale). For users that have limited data, the thing that can be done is that loading unecessary data is avoided. For eample only small previews of the images are downloaded automatically. (is data compressed for transfer?)
+For personal cloud, this is largely irrelevant. The infrastructure of personal home server wouldn't normally be that big, and when renting cloud services, a personal server doesn't need unpredictable, scaleable solutions. In the data transfer itself, in Finland, the only thing that usually costs something is the bandwidth and not the amount of data (at least on personal scale). For users that have limited data, this can be avoided by avoiding loading unecessary data or compressing file transfers. For example, only small previews of images are downloaded automatically to save data.
 
 ### 6.8 Network is homogeneous
-The Nextcloud and our solution supports various communication protocols and APIs.
+Nextcloud and our system us and support various communication protocols and APIs, so the network topology and architecture is very far from being homogeneous.
 
 ## 7 Further development
 Since NSS cloud is targeted for personal use and generally on local network, there's a plenty of room for expanding the set of features and functinalities.
@@ -221,3 +218,5 @@ Nextcloud feels like a great DIY cloud playground.
 <a id="forb-os">\[FORB-OS\]</a> - Why Is Open-Source So Important? Part One: Principles And Parity. [Link](https://www.forbes.com/sites/charlestowersclark/2019/09/24/why-is-open-source-so-important-part-one-principles-and-parity/?sh=6c89bbd861f7). Accessed 18.10.2021
 
 <a id="fall-10">\[FALL-10\]</a> - Deutsch's Fallacies, 10 Years After. [Link](https://web.archive.org/web/20070811082651/http://java.sys-con.com/read/38665.htm). Accessed 18.10.2021
+
+<a id="ubuntu-users">\[UBUNTU-USERS\]</a> - Add a new user account. [Link](https://help.ubuntu.com/stable/ubuntu-help/user-add.html.en). Accessed 19.10.2021
