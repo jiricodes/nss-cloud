@@ -36,8 +36,10 @@
 - [8 Evaluation](#8-evaluation)
 - [9 Conclusion / Learning](#9-conclusion-/-learning)
 
-## TBC Introduction?
-This report discusses the inevitable heat death of the universe that is looming *almost* behind the corner.
+## Introduction
+With the tentency to centalize cloud services on the Internet, we believe that one could benefit from their personal locally deployed system.
+
+The project's [Github repository](https://github.com/jiricodes/nss-cloud) contains additional files and information.
 　
 ## 1 System Goals
 This section introduces primary goals of the system and serves as a basis for all decisions regarding the practical implementation of the system. The goals can generally be divided into two categories, qualitative goals and quantitative goals, though some may also fall into both. Additionally, we describe some potential use cases as keeping them in mind will allow us to design our system from the ground up to be used effectively in practice.
@@ -108,6 +110,7 @@ Certbot maintains NSS-cloud's Let's Encrypt certificate. A valid certificate iss
 
 
 ## 4 Communication
+	REMOVE BEFORE UPLOAD!
 	Communication channel between the modules. For instance, do the modules use secure communication to communicate with each other, if yes, how?
 
 The main mode of communication between modules is TLS 1.3, which the Nextcloud server uses to communicate with the PostgreSQL database and the LDAP server. TLS stands for Transit Layer Security, and is a cryptographic communication protocol for computer networks.
@@ -116,9 +119,13 @@ The ip that Nextcloud is using is force in the configuration to use only TLS. So
 
 
 ## 5 Open source modules evaluation
-	Pros and cons of the open-source components/modules used for developing the system, and the modules/components you have built (3 points)
+Richard Stallman (GNU, FSF) has stated:
 
-*Open source is the way forward and any proprietary solution should be heavily build on open source. No need to keep reinventing wheel. (TBC reference based open source rant?)*
+> Free software is a matter of liberty, not price. You should think of *free* as in *'free speech,'* not as in *'free beer'*.
+
+A quotation that has shaped minds of developers over decades and became the foundation of open source world. This philosophy has enabled modern complex systems to exist efficiently and will continue to drive the software industry forward.[\[FORB-OS\]](#forb-os) Also it is important to understand that *free software* does not mean *noncommercial*, on the contrary a free code must be available for commercial use. [\[GNU-FREE\]](#gnu-free)
+
+One complication with modern open world systems, at least from beginners perspective, is that there is many licences that define *open source* or *free software* and their compatibilites largely varies. Therefore, selecting a correct lincense for your own open source project may not be trivial.
 
 ### 5.1 Nextcloud
 One major benefit of Nextcloud is that it is free and open source, which makes it affordable for individual consumers (and students). As we have mentioned above, privacy and security are two major consideration when it comes to a personal cloud, and the fact that Nextcloud is open source makes it easy for end users or other third parties to audit the software, without having to rely only on trusting the Nextcloud organization when they say their software is secure. This can also be a drawback, however, because the code is also visible to potential malicious parties, who can easily read the code and find bugs or other weaknesses that can be exploited. Another benefit for consumers is that Nextcloud can run very lightweight on inexpensive, easy to acquire hardware such as a RaspberryPi, though also offers the option to scale up very large for those who might need it. On the development side, the modular architecture of Nextcloud allows developers like our group the option to extend it with custom features, or with other useful extensions developed by third parties. Nextcloud also has very easy, beginner-friendly basic setup, and fairly comprehensive documentation that makes it easy to work with, even as a newcomer.
@@ -129,16 +136,14 @@ It is difficult to find many flaws with Let's Encrypt, which is free, simple, qu
 ### 5.3 PostgreSQL
 As with many other components used in this project, PostgreSQL is free and open source. It's known to have quite good performance and fast data access, which is beneficial for running on potentially lower-spec consumer hardware. It also has improved data integrity, as it doesn't change data by automatically correcting data types. However, this can also be a downside to some, as the convenience of automatic correction is sometimes worth the drop in data integrity. PostgreSQL also has some optimization features such as Partial Indexing, but those probably aren't needed in a personal cloud. One major downside related to our specific architecture is that the usage of PostgreSQL with Nextcloud isn't as smooth as with MariaDB/mySQL, as PostgreSQL isn't explicitly recommended for use with Nextcloud. However, due to some issues detailed later on in the report, PostgreSQL had to be settled for. Also, for a small project, PostgreSQL may be more robust than necessary, and other options such as mariaDB could offer smaller database sizes in exchange, for example. Lastly, PostgreSQL doesn't support table partitioning, which could sometimes be a nice feature to have.
 
-### 5.4 Optional nss-ca
-certificate chain generation and signing script. Based on widely used OpenSSL.
-- good enough for personal usage
-- openssl and crypto in general is not easy and user friendly
-- cannot be trustworthy otherwise
+### 5.4 NSS-ca
+The [nss-ca](https://github.com/jiricodes/nss-cloud/tree/master/nss_ca) is a self created certificate chain generation and signing script based on widely used [OpenSSL](https://www.openssl.org/). For local network deployments there's no need for verified trust anchor like Let's Encrypt, one usually can trust themself. Also general trust anchors require the certificate to be bound to a specific domain, which may couse troubles in this case since the domain is most probably missing and is substituted with local IP address. It is important to understand that the generated certificates won't be trusted by third parties.
 
-Bla bla bla OpenSSL crap and ambiguous documentation etc.
+The OpenSSL is well known and widely used open source crypto library and tools collection. However it is also commonly known that the documentation can be ambiguous at times and the learning curve to use OpenSSL efficiently and securely is fairly steep.
 
 ## 6 Fallacies
-	Which of the fallacies of the distributed system does your system violate, and how?
+
+The Eight Fallacies (set of assertions) of Distributed Computing were authored by L Peter Deutsch and others from Sun Microsystems in 1990's. [\[FALL-10\]](#fall-10) We describe NSS cloud position in regards to each of the fallacies.
 
 ### 6.1 Network is reliable
 The network doesn't allways be reliable for our application, but if network failures happen too often or if the file that is being downloaded/uploaded is very big things can get annoying. Downloading and uploading are prone to failure if the network isn't reliable enough which can lead to the entire process being restarted. This becomes increasingly annoying as the size of the file grows and network reliability goes down. Having to restart 1 hour long download multiple times starts to eat away at person's will to live.
@@ -158,7 +163,7 @@ Our system secures client communication with HTTPS and internal with TLS. Furthe
 *We're aware of side channel attacks vulnerabilities of mentioned systems and their are out of the scope of this project.
 
 ### 6.5 Topology doesn’t change
-- TBC
+Since all of NSS-cloud's components are within a VM, the topology of the "inner" network does not change. However, the "portability" of a VM means that there is a lot of potential for the network outside the VM to change, sometimes drastically. For example, a user may host the VM on their local machine, but then decide to move it to a remote hosting service. From the perspective of the VM, the exterior network topology completely changes when it moves from the local machine to the remote host.
 
 ### 6.6 There is one administrator
 Nextcloud support multiple administrators, and further specified roles can be delegated to support customized administration topology. [\[NC-WP\]](#nc-wp)
@@ -172,34 +177,23 @@ For personal cloud this is largely irrelevant. The infrastructure of personal ho
 The Nextcloud and our solution supports various communication protocols and APIs.
 
 ## 7 Further development
-	What needs to be added to your system be used to be integrated/extended by another system.
+Since NSS cloud is targeted for personal use and generally on local network, there's a plenty of room for expanding the set of features and functinalities.
 
 ### 7.1 Deployment
-**Refactor needed**
+Current deployment is not automated and it remains as one of the major development milestones. Automation is crucial for wider use and user friendliness, whether it is done through scription or containers. From our experience the setup ca be done quickly and the base installation doesn't take long. However the configuration process can be tedious, requires a certain level of expertise and is error prone.
 
-Despite personal use as main target environment, it would be nice to have some kind of automated deployment script (Especially when things go sideways). From our experience the setup can be done quite quick, but it still is tedious and requires time and certain level of expertise. Definitely not for non-IT user / consumer.
+For improved deployability all system components used could be containerized. This would enable automated and centralized deployment which in turns offers ease of deployment and migration.
 
-For improved deployability all system components used could be containerized. This would enable automated and centralized deployment which in turns offers better easy of deployment and migration.
-
-Nextcloud maintains stable docker container configuration, which is a good place to start.
+Nextcloud maintains [stable docker container](https://hub.docker.com/_/nextcloud) configuration, which is a good place to start.
 
 ### 7.2 Federation
 People on different servers can share files together. Though people still need to log into their own server, this can help extending the system and make communication between users of different servers possible.
 
 ### 7.3 Additional Services and Features
-Nextcloud provides user friendly *app store* where once can pick from many available services (e.g. something something, voice channel)
+Nextcloud provides user friendly *app store* where once can pick from many available services raging from customization, communication, collaborations through security all the way to games. This allows users to personalize their own nextcloud to target their exact needs.
 
-Further WebDAV standard complient API gives an opportunity to independently create custom services if one is of coding nature.
+However, if users' needs exceed the supply of native applications Nextcloud's WebDAV standard complient API gives an opportunity to independently create custom services.
 
-*Data storage connection to NAS-like system or at least raid-0 configuration of the system.*
-
-### 7.X Others
-- cetrificate: Cetrificate is needed for using https. For example Let's Encrypt is a service that can provide a cetrificate for an ip address. We used Certbot from EFF to get the cetrificate.
-
-- Restricted resources: The `standard.small` VM flavor (type) our project uses in the CSC Pouta has somewhat limited computing resources. To ensure that all the system components this project consists of were allocated adequate amount of memory and CPU cycles we ended up utilizing docker limitations.
-  - Docker accepts command line arguments to impose soft- and hard- memory limits and restrictions on CPU resources. The PostgreSQL container was graced with 384 MB with additional 384 MB available for swapping. CPU cycles utilization was constrained to atmost 50\% of one of the cores on the VM.   
-
-- We ran into problems with MariaDB and Nextcloud co-operation. The problem that rose when trying to connect to database was "Error while trying to initialise the database: An exception occurred while executing a query: SQLSTATE[HY000]: General error: 4047 InnoDB refuses to write tables with ROW_FORMAT=COMPRESSED or KEY_BLOCK_SIZE." We tried to debug it, but after some time with google and Nextcloud errordatabase we decided it would be easier to replace MariaDB with PostgreSQL. And thus we ended up using POstgreSQL instead of MariaDB.
 
 ## 8 Evaluation
 	Methodology used for evaluating the system performance, and the key results
@@ -212,7 +206,18 @@ Further WebDAV standard complient API gives an opportunity to independently crea
 
 Nextcloud feels like a great DIY cloud playground.
 
+- Restricted resources: The `standard.small` VM flavor (type) our project uses in the CSC Pouta has somewhat limited computing resources. To ensure that all the system components this project consists of were allocated adequate amount of memory and CPU cycles we ended up utilizing docker limitations.
+- Docker accepts command line arguments to impose soft- and hard- memory limits and restrictions on CPU resources. The PostgreSQL container was graced with 384 MB with additional 384 MB available for swapping. CPU cycles utilization was constrained to atmost 50\% of one of the cores on the VM.   
+
+- We ran into problems with MariaDB and Nextcloud co-operation. The problem that rose when trying to connect to database was "Error while trying to initialise the database: An exception occurred while executing a query: SQLSTATE[HY000]: General error: 4047 InnoDB refuses to write tables with ROW_FORMAT=COMPRESSED or KEY_BLOCK_SIZE." We tried to debug it, but after some time with google and Nextcloud errordatabase we decided it would be easier to replace MariaDB with PostgreSQL. And thus we ended up using POstgreSQL instead of MariaDB.
 
 ## Resources
 <a id="nc-wp">\[NC-WP\]</a> - Nextcloud Solution Architecture whitepaper. [Link](https://nextcloud.com/media/wp135098u/Architecture-Whitepaper-WebVersion-072018.pdf). Accessed 09.10.2021.
-<a id="pouta-flavors">\[Pouta-flavors\]</a> - Virtual machine flavors and billing unit rates. cPouta documentation. - [Link](https://docs.csc.fi/cloud/pouta/vm-flavors-and-billing/). Accessed 12.10.2021
+
+<a id="pouta-flavors">\[Pouta-flavors\]</a> - Virtual machine flavors and billing unit rates. cPouta documentation. [Link](https://docs.csc.fi/cloud/pouta/vm-flavors-and-billing/). Accessed 12.10.2021
+
+<a id="gnu-free">\[GNU-FREE\]</a> - GNU Philosophy: What is Free Software?. [Link](https://www.gnu.org/philosophy/free-sw.en.html). Accessed 18.10.2021
+
+<a id="forb-os">\[FORB-OS\]</a> - Why Is Open-Source So Important? Part One: Principles And Parity. [Link](https://www.forbes.com/sites/charlestowersclark/2019/09/24/why-is-open-source-so-important-part-one-principles-and-parity/?sh=6c89bbd861f7). Accessed 18.10.2021
+
+<a id="fall-10">\[FALL-10\]</a> - Deutsch's Fallacies, 10 Years After. [Link](https://web.archive.org/web/20070811082651/http://java.sys-con.com/read/38665.htm). Accessed 18.10.2021
