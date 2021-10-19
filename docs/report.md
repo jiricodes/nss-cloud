@@ -36,8 +36,10 @@
 - [8 Evaluation](#8-evaluation)
 - [9 Conclusion / Learning](#9-conclusion-/-learning)
 
-## TBC Introduction?
-This report discusses the inevitable heat death of the universe that is looming *almost* behind the corner.
+## Introduction
+With the tentency to centalize cloud services on the Internet, we believe that one could benefit from their personal locally deployed system.
+
+The project's [Github repository](https://github.com/jiricodes/nss-cloud) contains additional files and information.
 　
 ## 1 System Goals
 This section introduces primary goals of the system and serves as a basis for all decisions regarding the practical implementation of the system. The goals can generally be divided into two categories, qualitative goals and quantitative goals, though some may also fall into both. Additionally, we describe some potential use cases as keeping them in mind will allow us to design our system from the ground up to be used effectively in practice.
@@ -108,6 +110,7 @@ Certbot maintains NSS-cloud's Let's Encrypt certificate. A valid certificate iss
 
 
 ## 4 Communication
+	REMOVE BEFORE UPLOAD!
 	Communication channel between the modules. For instance, do the modules use secure communication to communicate with each other, if yes, how?
 
 The main mode of communication between modules is TLS 1.3, which the Nextcloud server uses to communicate with the PostgreSQL database and the LDAP server. TLS stands for Transit Layer Security, and is a cryptographic communication protocol for computer networks.
@@ -134,16 +137,13 @@ It is difficult to find many flaws with Let's Encrypt, which is free, simple, qu
 As with many other components used in this project, PostgreSQL is free and open source. It's known to have quite good performance and fast data access, which is beneficial for running on potentially lower-spec consumer hardware. It also has improved data integrity, as it doesn't change data by automatically correcting data types. However, this can also be a downside to some, as the convenience of automatic correction is sometimes worth the drop in data integrity. PostgreSQL also has some optimization features such as Partial Indexing, but those probably aren't needed in a personal cloud. One major downside related to our specific architecture is that the usage of PostgreSQL with Nextcloud isn't as smooth as with MariaDB/mySQL, as PostgreSQL isn't explicitly recommended for use with Nextcloud. However, due to some issues detailed later on in the report, PostgreSQL had to be settled for. Also, for a small project, PostgreSQL may be more robust than necessary, and other options such as mariaDB could offer smaller database sizes in exchange, for example. Lastly, PostgreSQL doesn't support table partitioning, which could sometimes be a nice feature to have.
 
 ### 5.4 NSS-ca
-The [nss-ca](../nss_ca)
-certificate chain generation and signing script. Based on widely used OpenSSL.
-- good enough for personal usage
-- openssl and crypto in general is not easy and user friendly
-- cannot be trustworthy otherwise
+The [nss-ca](https://github.com/jiricodes/nss-cloud/tree/master/nss_ca) is a self created certificate chain generation and signing script based on widely used [OpenSSL](https://www.openssl.org/). For local network deployments there's no need for verified trust anchor like Let's Encrypt, one usually can trust themself. Also general trust anchors require the certificate to be bound to a specific domain, which may couse troubles in this case since the domain is most probably missing and is substituted with local IP address. It is important to understand that the generated certificates won't be trusted by third parties.
 
-Bla bla bla OpenSSL crap and ambiguous documentation etc.
+The OpenSSL is well known and widely used open source crypto library and tools collection. However it is also commonly known that the documentation can be ambiguous at times and the learning curve to use OpenSSL efficiently and securely is fairly steep.
 
 ## 6 Fallacies
-	Which of the fallacies of the distributed system does your system violate, and how?
+
+The Eight Fallacies (set of assertions) of Distributed Computing were authored by L Peter Deutsch and others from Sun Microsystems in 1990's. [\[FALL-10\]](#fall-10) We describe NSS cloud position in regards to each of the fallacies.
 
 ### 6.1 Network is reliable
 The network doesn't allways be reliable for our application, but if network failures happen too often or if the file that is being downloaded/uploaded is very big things can get annoying. Downloading and uploading are prone to failure if the network isn't reliable enough which can lead to the entire process being restarted. This becomes increasingly annoying as the size of the file grows and network reliability goes down. Having to restart 1 hour long download multiple times starts to eat away at person's will to live.
@@ -177,26 +177,22 @@ For personal cloud this is largely irrelevant. The infrastructure of personal ho
 The Nextcloud and our solution supports various communication protocols and APIs.
 
 ## 7 Further development
-	What needs to be added to your system be used to be integrated/extended by another system.
+Since NSS cloud is targeted for personal use and generally on local network, there's a plenty of room for expanding the set of features and functinalities.
 
 ### 7.1 Deployment
-**Refactor needed**
+Current deployment is not automated and it remains as one of the major development milestones. Automation is crucial for wider use and user friendliness, whether it is done through scription or containers. From our experience the setup ca be done quickly and the base installation doesn't take long. However the configuration process can be tedious, requires a certain level of expertise and is error prone.
 
-Despite personal use as main target environment, it would be nice to have some kind of automated deployment script (Especially when things go sideways). From our experience the setup can be done quite quick, but it still is tedious and requires time and certain level of expertise. Definitely not for non-IT user / consumer.
+For improved deployability all system components used could be containerized. This would enable automated and centralized deployment which in turns offers ease of deployment and migration.
 
-For improved deployability all system components used could be containerized. This would enable automated and centralized deployment which in turns offers better easy of deployment and migration.
-
-Nextcloud maintains stable docker container configuration, which is a good place to start.
+Nextcloud maintains [stable docker container](https://hub.docker.com/_/nextcloud) configuration, which is a good place to start.
 
 ### 7.2 Federation
 People on different servers can share files together. Though people still need to log into their own server, this can help extending the system and make communication between users of different servers possible.
 
 ### 7.3 Additional Services and Features
-Nextcloud provides user friendly *app store* where once can pick from many available services (e.g. something something, voice channel)
+Nextcloud provides user friendly *app store* where once can pick from many available services raging from customization, communication, collaborations through security all the way to games. This allows users to personalize their own nextcloud to target their exact needs.
 
-Further WebDAV standard complient API gives an opportunity to independently create custom services if one is of coding nature.
-
-*Data storage connection to NAS-like system or at least raid-0 configuration of the system.*
+However, if users' needs exceed the supply of native applications Nextcloud's WebDAV standard complient API gives an opportunity to independently create custom services.
 
 
 ## 8 Evaluation
@@ -223,3 +219,5 @@ Nextcloud feels like a great DIY cloud playground.
 <a id="gnu-free">\[GNU-FREE\]</a> - GNU Philosophy: What is Free Software?. [Link](https://www.gnu.org/philosophy/free-sw.en.html). Accessed 18.10.2021
 
 <a id="forb-os">\[FORB-OS\]</a> - Why Is Open-Source So Important? Part One: Principles And Parity. [Link](https://www.forbes.com/sites/charlestowersclark/2019/09/24/why-is-open-source-so-important-part-one-principles-and-parity/?sh=6c89bbd861f7). Accessed 18.10.2021
+
+<a id="fall-10">\[FALL-10\]</a> - Deutsch's Fallacies, 10 Years After. [Link](https://web.archive.org/web/20070811082651/http://java.sys-con.com/read/38665.htm). Accessed 18.10.2021
