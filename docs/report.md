@@ -32,7 +32,6 @@
     - [7.1 Deployment](#71-deployment)
     - [7.2 Federation](#72-federation)
     - [7.3 Additional Services and Features](#73-additional-services-and-features)
-    - [7.X Others](#7x-others)
 - [8 Evaluation](#8-evaluation)
     - [8.1 Tools and setup](#81-tools-and-setup)
     - [8.2 Test results](#82-test-results)
@@ -198,17 +197,10 @@ However, if users' needs to exceed the supply of native applications Nextcloud's
 
 
 ## 8 Evaluation
-	Methodology used for evaluating the system performance, and the key results
-	Needs ALOT of polishing
-
-- hardware resource usage (idle and under load)
-- latency, throughput / bandwidth?
-- user experience testing
 
 We evaluated our system performance using two different testing setups.
 
 ### 8.1 Tools and setup
-### 8.2 Test results
 
 For the first test we used [ApacheBench](https://httpd.apache.org/docs/current/programs/ab.html) (AB) which is free, open source command line program designed to test web servers. The test aims to measure how the server works under load. The test was invoked with
 ```
@@ -216,34 +208,45 @@ $ ab -n 100000 -c 1000 "-H Accept-Encoding: gzip, deflate" -rk
 ```
 The command sends 1000 concurrent requests at a time making a total of 100 000 HTTP requests to the NSSCloud landing page. Accept-Encoding header is also added to each request to better mimic real user traffic. 
 
-In our second test scenario we wanted to measure if continuous upload has any negative effect on the user experience of the application i.e. does it slow down due to increased CPU usage. This is of interest because all user uploaded content is encrypted on the fly using AES 256, which hypothetically consumes server resources. We performed the test by uploading CentOS 8.4 image (CentOS-8.4.2105-x86_64-dvd1.iso 9.2GB) using [cURL](https://curl.se/) with basic authentication. To measure the total upload time we used the time command. The actual CPU usage during the upload was manually observed with [htop](https://htop.dev/) aswell as from Nextcloud's admin view's resource tab. This test was identically repeated nine times.
+In our second test scenario we wanted to measure if continuous upload has any negative effect on the user experience of the application i.e. does response time slow down due to increased CPU usage. This is of interest because all user uploaded content is encrypted on the fly using AES 256, which hypothetically consumes server resources. We performed this test by uploading CentOS 8.4 image (CentOS-8.4.2105-x86_64-dvd1.iso 9.2GB) using [cURL](https://curl.se/) with basic authentication. To measure the total upload time we used the [time](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/time.html) command. The actual CPU usage during the upload was manually observed with [htop](https://htop.dev/) aswell as from Nextcloud's admin view's resource tab. This test was identically repeated nine times.
 
-curl with basic authentication to test upload:
+curl command with basic authentication used in test 2:
 ```
 $ time curl -u <user>:<pass> -T ./CentOS-8.4.2105-x86_64-dvd1.iso "https://vm3984.kaj.pouta.csc.fi/remote.php/dav/files/<USERNAME>/<DIRECTORY>/CentOS-8.4.2105-x86_64-dvd1.iso"
 ```
 
-Test completion times for test 2 as reported by the [time](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/time.html) command are displayed in [Table 1](#table-1).
+Test completion times for test 2 as reported by the time command are displayed in [Table 1](#table-1).
 
-  
 
 ### 8.2 Test results
 
+Test results from test 1: 
+```
+Server Port:            443
+SSL/TLS Protocol:       TLSv1.2,ECDHE-RSA-AES256-GCM-SHA384,2048,256
+Time taken for tests:   67.678 seconds
+Complete requests:      100000
+Failed requests:        0
+
+Requests per second:    1477.59 [#/sec] (mean)
+Time per request:       676.776 [ms] (mean)
+Time per request:       0.677 [ms] (mean, across all concurrent requests)
+Transfer rate:          5015.15 [Kbytes/sec] received
+```
+The results show that NSS-Cloud was able to serve nearly 1.5k requests per second. This should be sufficient for any household needs.
+
 <a id="figure-3">![Figure 3](pictures/ab_matlibplot.png)</a>
-*Figure 3: Measured total time for requests send. Sampling rate is 1 second. Scatterplot*
-As displayed in [Figure 3](#figure-3) benchmarking is hard.
-
-
+*Figure 3: Measured total time for requests send as a Scatterplot. Sampling rate is 1 second.*
 
 | time type | transfer #1 | transfer #3 | transfer #2 | transfer #4 | transfer #5 | transfer #6 | transfer #7 | transfer #8 | transfer #9 |
-|---|---|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+|---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | real | 6m57.826s | 10m40.263s | 10m33.771s | 6m32.421s | 10m28.944s | 10m11.158s | 6m37.737s | 9m59.962s | 10m7.240s |
 | user | 0m9.970s | 0m9.568s | 0m9.244s | 0m9.387s | 0m9.595s | 0m9.527s | 0m9.423s | 0m9.314s | 0m9.785s |
 | system | 0m18.034s | 0m14.672s | 0m13.850s | 0m14.601s | 0m15.734s | 0m16.407s | 0m15.641s | 0m15.541s | 0m15.519s |
-*<a id="table-1">[Table 1](#Table 1)</a> - Test completion times for test 2.*
+*[Table 1](#Table 1): Test completion times for test 2.*
 
 
-In test 2 we noticed that uploading large file raises CPU load average near to 2. This has noticeable impact on the NSSCloud service that was discovered with manually navigating in the Nextcloud Web interface. Memory consumption was not noticeably affected, it remained at steady ~550MB/1.89GB throughout the uploads.
+In test 2 we noticed that uploading large file raises CPU load average near to 2. This has noticeable impact on the NSSCloud service that was discovered with manually navigating in the Nextcloud Web interface. Memory consumption was not noticeably affected, it remained at steady ~550 MB/1.89 GB throughout the uploads.
 
 On CPU usage we observed that in every testcase both CPU cores were fully utilized for the whole duration of the upload. During the upload it could be clearly seen that Nextcloud's graphical interface's response time increased. Notably the service did not crash nor become unresponsive at any point.
 
@@ -252,7 +255,7 @@ To get a more holistic understanding of how NSSCloud performs under load we woul
 If we were to keep on working with our NSSCloud setup external monitoring tools to measure the server performance would prove to be of value. One of such tools is [Monitorix](https://www.monitorix.org/) which produces various informative graphs about server utilization. These graphs provide a great overview of the server state. And while they are not too exact, they are enough to raise flags should something go awry and alert the admins to research further. For the benefit of any possible future admin, we have installed Monitorix on NSS-Cloud.
 
 <a id="figure-4">![Figure 4](pictures/monitorix_load_average.png)</a>
-*Monitorix displaying System load average, active processes and memory allocation of NSS-Cloud server.*
+*Figure 4: Monitorix displaying System load average, active processes and memory allocation of NSS-Cloud server.*
 
 
 ## 9 Conclusion / Learning
