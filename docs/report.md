@@ -198,7 +198,7 @@ However, if users' needs to exceed the supply of native applications Nextcloud's
 
 ## 8 Evaluation
 
-We evaluated our system performance using two different testing setups.
+We evaluated our system performance using two different test setups.
 
 ### 8.1 Tools and setup
 
@@ -206,7 +206,7 @@ For the first test we used [ApacheBench](https://httpd.apache.org/docs/current/p
 ```
 $ ab -n 100000 -c 1000 "-H Accept-Encoding: gzip, deflate" -rk
 ```
-The command sends 1000 concurrent requests at a time making a total of 100 000 HTTP requests to the NSSCloud landing page. Accept-Encoding header is also added to each request to better mimic real user traffic. 
+The command sends 1000 concurrent requests at a time making a total of 100 000 HTTP requests to the NSS-Cloud landing page. Accept-Encoding -header is also added to each request to better mimic real user traffic. 
 
 In our second test scenario we wanted to measure if continuous upload has any negative effect on the user experience of the application i.e. does response time slow down due to increased CPU usage. This is of interest because all user uploaded content is encrypted on the fly using AES 256, which hypothetically consumes server resources. We performed this test by uploading CentOS 8.4 image (CentOS-8.4.2105-x86_64-dvd1.iso 9.2GB) using [cURL](https://curl.se/) with basic authentication. To measure the total upload time we used the [time](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/time.html) command. The actual CPU usage during the upload was manually observed with [htop](https://htop.dev/) aswell as from Nextcloud's admin view's resource tab. This test was identically repeated nine times.
 
@@ -243,6 +243,7 @@ The results show that NSS-Cloud was able to serve nearly 1.5k requests per secon
 | real | 6m57.826s | 10m40.263s | 10m33.771s | 6m32.421s | 10m28.944s | 10m11.158s | 6m37.737s | 9m59.962s | 10m7.240s |
 | user | 0m9.970s | 0m9.568s | 0m9.244s | 0m9.387s | 0m9.595s | 0m9.527s | 0m9.423s | 0m9.314s | 0m9.785s |
 | system | 0m18.034s | 0m14.672s | 0m13.850s | 0m14.601s | 0m15.734s | 0m16.407s | 0m15.641s | 0m15.541s | 0m15.519s |
+
 *[Table 1](#Table 1): Test completion times for test 2.*
 
 
