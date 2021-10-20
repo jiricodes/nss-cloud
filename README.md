@@ -9,7 +9,7 @@ The final report can be found in [`docs/report.md`](docs/report.md).
 Contains configuration files and scripts. More information in [README](conf/README.md)
 
 ### docs/
-All project documets. Including project definition (subject) and report.
+All project documents. Including project definition (subject) and report.
 - [subject](docs/subject.md)
 - [report](docs/report.md)
 - [presentation](docs/presentation.md)

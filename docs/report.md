@@ -70,7 +70,7 @@ One rather complex, DIY-style, application could be seen with development of cus
 ## 2 System architecture
 ### 2.1 Nextcloud server architecture
 
-![Figure 1](fig-1-nextcloud-setup.png)
+![Figure 1](pictures/fig-1-nextcloud-setup.png)
 
 *Figure 1 - Scalable Nexcloud setup example. Nextcloud server at the center, NFS (Network file system) as storage layer at the bottom, an LDAP (Lightweight Directory Access Protocol) user directory, REDIS caching, multiple databases and loadbalancer.  [\[NC-WP\]](#nc-wp)*
 
@@ -80,7 +80,7 @@ There are a variety of options for accessing and managing the data stored within
 
 ### 2.2 NSS-cloud adoption
 
-<a id="figure-2">![Figure 2](nss-cloud-arch.png)</a>
+<a id="figure-2">![Figure 2](pictures/nss-cloud-arch.png)</a>
 
 *Figure 2 - NSS cloud architecture. Clients connect to Nextcloud over HTTPS. The default OS filesystem is used as the storage layer. The PostgreSQL database runs in a container accessed via TLS.*
 
@@ -198,10 +198,84 @@ However, if users' needs exceed the supply of native applications Nextcloud's We
 
 ## 8 Evaluation
 	Methodology used for evaluating the system performance, and the key results
+	Needs ALOT of polishing
 
 - hardware resource usage (idle and under load)
 - latency, throughput / bandwidth?
 - user experience testing
+
+Tools and setup
+ab for pounding - see how much load the server can take.
+https://httpd.apache.org/docs/2.4/programs/ab.html
+ab -n 100_000 -c 1000 "-H Accept-Encoding: gzip, deflate" -rk
+
+The command sends 1000 concurrent request at a time of a total 100_000 requests
+
+Output of Apache Bench plotted with gnuplot?
+https://www.bradlanders.com/2013/04/15/apache-bench-and-gnuplot-youre-probably-doing-it-wrong/
+
+<a id="figure-3">![Figure 3](pictures/ab_matlibplot.png)</a>
+
+As displayed in [Figure 3](#figure-3) benchmarking is hard.
+
+
+uploading CENTOS iso to test if having encryption on affects
+ CentOS-8.4.2105-x86_64-dvd1.iso  9.2 GB
+
+
+curl basic authentication to test upload:
+https://docs.nextcloud.com/server/20/user_manual/en/files/access_webdav.html#accessing-files-using-curl
+
+Nextcloud supports the WEbDAV protocol and allows for syncronization of files over WebDAV.
+
+time curl -u user:pass -T ./CentOS-8.4.2105-x86_64-dvd1.iso "https://vm3984.kaj.pouta.csc.fi/remote.php/dav/files/USERNAME/DIRECTORY/CentOS-8.4.2105-x86_64-dvd1.iso"
+
+real	6m57.826s
+user	0m9.970s
+sys	0m18.034s
+
+real	10m33.771s
+user	0m9.244s
+sys	0m13.850s
+
+real	10m40.263s
+user	0m9.568s
+sys	0m14.672s
+
+real	6m32.421s
+user	0m9.387s
+sys	0m14.601s
+
+real	10m28.944s
+user	0m9.595s
+sys	0m15.734s
+
+real	10m11.158s
+user	0m9.527s
+sys	0m16.407s
+
+real	6m37.737s
+user	0m9.423s
+sys	0m15.641s
+
+
+
+We noticed that uploading large file raises CPU load average to near 2. This has noticable impact on the NSSCloud service that was noticed with manually navigating in the Nextcloud Web interface. Memory consumption was not noticeably affected, it remained at steady ~530MB/1.89Gb throughout the upload.
+
+<a id="figure-4">![Figure 4](pictures/monitorix_load_average.png)</a>
+
+screenshots from monitorix load average and MEM usage here
+
+For future: benchmark without encryption on to see if it affects and how much.
+
+To get more holistic understanding of how NSSCloud performs under laod we would need to do more kokonaisvaltainen benchmarking, we would need to profile and benchmark the NSSCloud code with various different types of request. Our ab approach only requests the same welcome page over and over again.
+
+For performance evaluation
+ab - Apache HTTP server benchmarking tool
+implement users to have more pages to hammer at the same time
+
+
+Future bettering, Munin - a resource monitoring tool, an upgrade from monitorix 
 
 ## 9 Conclusion / Learning
 

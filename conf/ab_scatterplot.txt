@@ -1,0 +1,17 @@
+>>> import matplotlib.pyplot as plt
+>>> import pandas as pd
+>>> data = pd.read_csv("path/to/file", sep="\t")
+>>> min=1634728941
+>>> data['secs'] = data['seconds']-min
+>>> plt.scatter(data['secs'], data['ttime'], marker=(5,2), linewidths=0.5)
+>>> plt.show()
+
+
+
+## You'd apply label(s) like so, be mindfull to connect to the scatter object the right way around.
+>>> plt.title("ab -n 100 000 -c 1000 '-H Accept-Enconding: gzip, deflate' -rk")
+Text(0.5, 1.0, "ab -n 100 000 -c 1000 '-H Accept-Enconding: gzip, deflate' -rk")
+>>> plt.xlabel('seconds')
+Text(0.5, 0, 'seconds')
+>>> plt.ylabel('response time (ms)')
+Text(0, 0.5, 'response time (ms)') 

@@ -1,0 +1,19 @@
+FROM alpine
+  
+ENV TERM linux
+RUN apk --no-cache add apache2-utils bash
+
+# Cheap trick to create data folder withouth having to provide build context during build
+WORKDIR /usr/src/data
+
+WORKDIR /usr/src
+
+# Entrypoint towards bash to allow free roaming inside the container. Commands are then run with 'ab' prefix as if on native installation
+ENTRYPOINT ["/bin/bash"]
+
+
+#########################
+# Build with invoking 
+#   docker image build -t ab-bench - < Dockerfile
+# Run with --rm to have clean logs on each run
+#   docker run  -v "/home/cloud-user/bench:/usr/src/data" -it --rm ab-bench
