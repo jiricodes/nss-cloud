@@ -230,37 +230,19 @@ Nextcloud supports the WEbDAV protocol and allows for syncronization of files ov
 
 time curl -u user:pass -T ./CentOS-8.4.2105-x86_64-dvd1.iso "https://vm3984.kaj.pouta.csc.fi/remote.php/dav/files/USERNAME/DIRECTORY/CentOS-8.4.2105-x86_64-dvd1.iso"
 
-real	6m57.826s
-user	0m9.970s
-sys	0m18.034s
 
-real	10m33.771s
-user	0m9.244s
-sys	0m13.850s
 
-real	10m40.263s
-user	0m9.568s
-sys	0m14.672s
+|  | transfer #1 | transfer #3 | transfer #2 | transfer #4 | transfer #5 | transfer #6 | transfer #7 | transfer #8 | transfer #9 |
+|---|---|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| real | 6m57.826s | 10m40.263s | 10m33.771s | 6m32.421s | 10m28.944s | 10m11.158s | 6m37.737s | 9m59.962s | 10m7.240s |
+| user | 0m9.970s | 0m9.568s | 0m9.244s | 0m9.387s | 0m9.595s | 0m9.527s | 0m9.423s | 0m9.314s | 0m9.785s |
+| sys | 0m18.034s | 0m14.672s | 0m13.850s | 0m14.601s | 0m15.734s | 0m16.407s | 0m15.641s | 0m15.541s | 0m15.519s |
 
-real	6m32.421s
-user	0m9.387s
-sys	0m14.601s
-
-real	10m28.944s
-user	0m9.595s
-sys	0m15.734s
-
-real	10m11.158s
-user	0m9.527s
-sys	0m16.407s
-
-real	6m37.737s
-user	0m9.423s
-sys	0m15.641s
+table of times measured for CentOSImage
 
 
 
-We noticed that uploading large file raises CPU load average to near 2. This has noticable impact on the NSSCloud service that was noticed with manually navigating in the Nextcloud Web interface. Memory consumption was not noticeably affected, it remained at steady ~530MB/1.89Gb throughout the upload.
+We noticed that uploading large file raises CPU load average to near 2. This has noticable impact on the NSSCloud service that was noticed with manually navigating in the Nextcloud Web interface. Memory consumption was not noticeably affected, it remained at steady ~530MB/1.89GB throughout the upload.
 
 <a id="figure-4">![Figure 4](pictures/monitorix_load_average.png)</a>
 
