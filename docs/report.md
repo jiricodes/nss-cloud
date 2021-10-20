@@ -119,8 +119,6 @@ A TLS connection consists of two parties: the client which initiates by sending 
 
 While all of the internal components of NSS-cloud communicate via TLS, the web clients communicate with the Nextcloud server instance over HTTPS, the "secure" form of HTTP. However, said security is in fact provided by TLS as well, with HTTPS sometimes being referred to as HTTP over TLS. This is exactly what it sounds like: the client and server still exchange data using HTTP, with all of it being secure using TLS as described in the previous paragraph.
 
-The ip that Nextcloud is using is force in the configuration to use only TLS. So there is no possibility that the connection would not be encrypted. The certificate is also from Lets Encrypt and are copied during Docker init from diskdrive to PostgreSQL configuration directory and also TLS is put on with commandline option. SSL must be used if the database is not on the same server as the Nextcloud instance, which is not currently the case with our project.
-
 
 ## 5 Open source modules evaluation
 Richard Stallman (GNU, FSF) has stated:
