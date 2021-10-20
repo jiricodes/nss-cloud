@@ -244,7 +244,7 @@ The results show that NSS-Cloud was able to serve nearly 1.5k requests per secon
 | user | 0m9.970s | 0m9.568s | 0m9.244s | 0m9.387s | 0m9.595s | 0m9.527s | 0m9.423s | 0m9.314s | 0m9.785s |
 | system | 0m18.034s | 0m14.672s | 0m13.850s | 0m14.601s | 0m15.734s | 0m16.407s | 0m15.641s | 0m15.541s | 0m15.519s |
 
-*[Table 1](#Table 1): Test completion times for test 2.*
+<a id="table-1"></a>*Table 1: Test completion times for test 2.*
 
 
 In test 2 we noticed that uploading large file raises CPU load average near to 2. This has noticeable impact on the NSSCloud service that was discovered with manually navigating in the Nextcloud Web interface. Memory consumption was not noticeably affected, it remained at steady ~550 MB/1.89 GB throughout the uploads.
