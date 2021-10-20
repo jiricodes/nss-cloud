@@ -110,8 +110,6 @@ Certbot maintains NSS-cloud's Let's Encrypt certificate. A valid certificate iss
 
 
 ## 4 Communication
-	REMOVE BEFORE UPLOAD!
-	Communication channel between the modules. For instance, do the modules use secure communication to communicate with each other, if yes, how?
 
 The main mode of communication between modules is TLS 1.3, which the Nextcloud server uses to communicate with the PostgreSQL database and the LDAP server. TLS stands for Transit Layer Security, and is a cryptographic communication protocol for computer networks. TLS is secure protocol that runs in the network's application layer, intended to facilitate secure communication between computer programs that are also at the application layer. This is why TLS is primarily used by NSS-cloud's components to communicate. 
 
