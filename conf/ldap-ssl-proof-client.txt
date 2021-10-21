@@ -1,0 +1,149 @@
+** ld 0x557288874f20 Connections:
+* host: vm3984.kaj.pouta.csc.fi  port: 389  (default)
+  refcnt: 2  status: Connected
+  last used: Thu Oct 21 10:35:10 2021
+
+
+** ld 0x557288874f20 Outstanding Requests:
+ * msgid 1,  origid 1, status InProgress
+   outstanding referrals 0, parent count 0
+  ld 0x557288874f20 request count 1 (abandoned 0)
+** ld 0x557288874f20 Response Queue:
+   Empty
+  ld 0x557288874f20 response count 0
+ldap_chkResponseList ld 0x557288874f20 msgid 1 all 1
+ldap_chkResponseList returns ld 0x557288874f20 NULL
+ldap_int_select
+read1msg: ld 0x557288874f20 msgid 1 all 1
+ber_get_next
+ber_get_next: tag 0x30 len 12 contents:
+read1msg: ld 0x557288874f20 msgid 1 message type extended-result
+ber_scanf fmt ({eAA) ber:
+read1msg: ld 0x557288874f20 0 new referrals
+read1msg:  mark request completed, ld 0x557288874f20 msgid 1
+request done: ld 0x557288874f20 msgid 1
+res_errno: 0, res_error: <>, res_matched: <>
+ldap_free_request (origid 1, msgid 1)
+ldap_parse_extended_result
+ber_scanf fmt ({eAA) ber:
+ldap_parse_result
+ber_scanf fmt ({iAA) ber:
+ber_scanf fmt (}) ber:
+ldap_msgfree
+TLS trace: SSL_connect:before SSL initialization
+TLS trace: SSL_connect:SSLv3/TLS write client hello
+TLS trace: SSL_connect:SSLv3/TLS write client hello
+TLS trace: SSL_connect:SSLv3/TLS read server hello
+TLS certificate verification: depth: 2, err: 0, subject: /C=US/O=Internet Security Research Group/CN=ISRG Root X1, issuer: /C=US/O=Internet Security Research Group/CN=ISRG Root X1
+TLS certificate verification: depth: 1, err: 0, subject: /C=US/O=Let's Encrypt/CN=R3, issuer: /C=US/O=Internet Security Research Group/CN=ISRG Root X1
+TLS certificate verification: depth: 0, err: 0, subject: /CN=vm3984.kaj.pouta.csc.fi, issuer: /C=US/O=Let's Encrypt/CN=R3
+TLS trace: SSL_connect:SSLv3/TLS read server certificate
+TLS trace: SSL_connect:SSLv3/TLS read server key exchange
+TLS trace: SSL_connect:SSLv3/TLS read server done
+TLS trace: SSL_connect:SSLv3/TLS write client key exchange
+TLS trace: SSL_connect:SSLv3/TLS write change cipher spec
+TLS trace: SSL_connect:SSLv3/TLS write finished
+TLS trace: SSL_connect:SSLv3/TLS write finished
+TLS trace: SSL_connect:SSLv3/TLS read change cipher spec
+TLS trace: SSL_connect:SSLv3/TLS read finished
+ldap_sasl_bind
+ldap_send_initial_request
+ldap_send_server_request
+ber_scanf fmt ({it) ber:
+ber_scanf fmt ({i) ber:
+ber_flush2: 45 bytes to sd 3
+ldap_result ld 0x557288874f20 msgid 2
+wait4msg ld 0x557288874f20 msgid 2 (infinite timeout)
+wait4msg continue ld 0x557288874f20 msgid 2 all 1
+** ld 0x557288874f20 Connections:
+* host: vm3984.kaj.pouta.csc.fi  port: 389  (default)
+  refcnt: 2  status: Connected
+  last used: Thu Oct 21 10:35:10 2021
+
+
+** ld 0x557288874f20 Outstanding Requests:
+ * msgid 2,  origid 2, status InProgress
+   outstanding referrals 0, parent count 0
+  ld 0x557288874f20 request count 1 (abandoned 0)
+** ld 0x557288874f20 Response Queue:
+   Empty
+  ld 0x557288874f20 response count 0
+ldap_chkResponseList ld 0x557288874f20 msgid 2 all 1
+ldap_chkResponseList returns ld 0x557288874f20 NULL
+ldap_int_select
+read1msg: ld 0x557288874f20 msgid 2 all 1
+ber_get_next
+ber_get_next: tag 0x30 len 12 contents:
+read1msg: ld 0x557288874f20 msgid 2 message type bind
+ber_scanf fmt ({eAA) ber:
+read1msg: ld 0x557288874f20 0 new referrals
+read1msg:  mark request completed, ld 0x557288874f20 msgid 2
+request done: ld 0x557288874f20 msgid 2
+res_errno: 0, res_error: <>, res_matched: <>
+ldap_free_request (origid 2, msgid 2)
+ldap_parse_result
+ber_scanf fmt ({iAA) ber:
+ber_scanf fmt (}) ber:
+ldap_msgfree
+# extended LDIF
+#
+# LDAPv3
+# base <> (default) with scope subtree
+# filter: (objectclass=*)
+# requesting: ALL
+#
+
+ldap_search_ext
+put_filter: "(objectclass=*)"
+put_filter: simple
+put_simple_filter: "objectclass=*"
+ldap_send_initial_request
+ldap_send_server_request
+ber_scanf fmt ({it) ber:
+ber_scanf fmt ({) ber:
+ber_flush2: 39 bytes to sd 3
+ldap_result ld 0x557288874f20 msgid -1
+wait4msg ld 0x557288874f20 msgid -1 (infinite timeout)
+wait4msg continue ld 0x557288874f20 msgid -1 all 0
+** ld 0x557288874f20 Connections:
+* host: vm3984.kaj.pouta.csc.fi  port: 389  (default)
+  refcnt: 2  status: Connected
+  last used: Thu Oct 21 10:35:10 2021
+
+
+** ld 0x557288874f20 Outstanding Requests:
+ * msgid 3,  origid 3, status InProgress
+   outstanding referrals 0, parent count 0
+  ld 0x557288874f20 request count 1 (abandoned 0)
+** ld 0x557288874f20 Response Queue:
+   Empty
+  ld 0x557288874f20 response count 0
+ldap_chkResponseList ld 0x557288874f20 msgid -1 all 0
+ldap_chkResponseList returns ld 0x557288874f20 NULL
+ldap_int_select
+read1msg: ld 0x557288874f20 msgid -1 all 0
+ber_get_next
+ber_get_next: tag 0x30 len 12 contents:
+read1msg: ld 0x557288874f20 msgid 3 message type search-result
+ber_scanf fmt ({eAA) ber:
+read1msg: ld 0x557288874f20 0 new referrals
+read1msg:  mark request completed, ld 0x557288874f20 msgid 3
+request done: ld 0x557288874f20 msgid 3
+res_errno: 32, res_error: <>, res_matched: <>
+ldap_free_request (origid 3, msgid 3)
+# search result
+search: 3
+ldap_parse_result
+ber_scanf fmt ({iAA) ber:
+ber_scanf fmt (}) ber:
+ldap_err2string
+result: 32 No such object
+ldap_msgfree
+
+# numResponses: 1
+ldap_free_connection 1 1
+ldap_send_unbind
+ber_flush2: 7 bytes to sd 3
+TLS trace: SSL3 alert write:warning:close notify
+ldap_free_connection: actually freed
+
