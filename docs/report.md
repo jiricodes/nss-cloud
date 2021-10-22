@@ -1,6 +1,7 @@
 # NSS-Cloud Report
-## 0 TOC
+## Table of Content
 
+- [Introduction](#introduction)
 - [1 System Goals](#1-system-goals)
     - [1.1 Qualitative Goals](#11-qualitative-goals)
     - [1.2 Quantitative Goals](#12-quantitative-goals)
@@ -10,15 +11,15 @@
     - [2.2 NSS-cloud adoption](#22-nss-cloud-adoption)
 - [3 Components](#3-components)
     - [3.1 Nextcloud](#31-nextcloud)
-    - [3.2 PostegreSQL](#32-postegresql)
+    - [3.2 PostgreSQL](#32-postgresql)
     - [3.3 LDAP](#33-ldap)
-    - [3.4 Certification BOT](#34-certification-bot)
-    - [3.5 Clients](#35-clients)
+    - [3.4 Certification BOT (Certbot by EFF)](#34-certification-bot-certbot-by-eff)
 - [4 Communication](#4-communication)
 - [5 Open source modules evaluation](#5-open-source-modules-evaluation)
     - [5.1 Nextcloud](#51-nextcloud)
     - [5.2 Let's Encrypt](#52-lets-encrypt)
-    - [5.3 Optional nss-ca](#53-optional-nss-ca)
+	- [5.3 PostgreSQL](#53-postgresql)
+    - [5.4 NSS-CA](#54-nss-ca)
 - [6 Fallacies](#6-fallacies)
     - [6.1 Network is reliable](#61-network-is-reliable)
     - [6.2 Latency is zero](#62-latency-is-zero)
@@ -35,7 +36,8 @@
 - [8 Evaluation](#8-evaluation)
     - [8.1 Tools and setup](#81-tools-and-setup)
     - [8.2 Test results](#82-test-results)
-- [9 Conclusion / Learning](#9-conclusion-/-learning)
+- [9 Conclusion and Learning](#9-conclusion-and-learning)
+- [Resources](#resources)
 
 ## Introduction
 With the tentency to centalize cloud services on the Internet, we believe that one could benefit from their personal locally deployed system.
@@ -138,7 +140,7 @@ It is difficult to find many flaws with Let's Encrypt, which is free, simple, qu
 ### 5.3 PostgreSQL
 As with many other components used in this project, PostgreSQL is free and open source. It's known to have quite good performance and fast data access, which is beneficial for running on potentially lower-spec consumer hardware. It also has improved data integrity, as it doesn't change data by automatically correcting data types. However, this can also be a downside to some, as the convenience of automatic correction is sometimes worth the drop in data integrity. PostgreSQL also has some optimization features such as Partial Indexing, but those probably aren't needed in a personal cloud. One major downside related to our specific architecture is that the usage of PostgreSQL with Nextcloud isn't as smooth as with MariaDB/mySQL, as PostgreSQL isn't explicitly recommended for use with Nextcloud. However, due to some issues detailed later on in the report, PostgreSQL had to be settled for. Also, for a small project, PostgreSQL may be more robust than necessary, and other options such as mariaDB could offer smaller database sizes in exchange, for example. Lastly, PostgreSQL doesn't support table partitioning, which could sometimes be a nice feature to have.
 
-### 5.4 NSS-ca
+### 5.4 NSS-CA
 The [nss-ca](https://github.com/jiricodes/nss-cloud/tree/master/nss_ca) is a self created certificate chain generation and signing script based on widely used [OpenSSL](https://www.openssl.org/). For local network deployments there's no need for verified trust anchor like Let's Encrypt, one usually can trust themself. Also general trust anchors require the certificate to be bound to a specific domain, which may cause troubles in this case since the domain is most probably missing and is substituted with local IP address. It is important to understand that the generated certificates won't be trusted by third parties.
 
 The OpenSSL is well known and widely used open source crypto library and tools collection. However, it is also commonly known that the documentation can be ambiguous at times and the learning curve to use OpenSSL efficiently and securely is fairly steep.
@@ -257,7 +259,7 @@ If we were to keep on working with our NSSCloud setup external monitoring tools 
 *Figure 4: Monitorix displaying System load average, active processes and memory allocation of NSS-Cloud server.*
 
 
-## 9 Conclusion / Learning
+## 9 Conclusion and Learning
 
 Nextcloud feels like a great DIY cloud playground.
 
